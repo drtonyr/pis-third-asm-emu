@@ -166,7 +166,7 @@ Now you can run an exmaple program:
 
 # Some comments on the code
 
-## basic data types
+## Basic data types
 
 Third has 16, 32 and 64 bit signed/unsigned integers and a custom 48 bit floating point as well as being able to read IEEE 734 floating point.   A bit of basic math is supported, such as fast integer square root, floating point trig was on the list but never completed.
 
@@ -174,7 +174,7 @@ Internally characters are 16 bits using the obsolete UCS-2, the Basic Multilingu
 
 ## Random numbers
 
-The code contains a novel and very efficient implementation which returns a randomw number in (normally) only 16 instructions.  It's based on a 63,62 [Lagged Fibonacci Generator](https://en.wikipedia.org/wiki/Lagged_Fibonacci_generator)
+The code contains a novel and very efficient implementation which returns a random number in (normally) only 16 instructions.  It's based on a 63,62 [Lagged Fibonacci Generator](https://en.wikipedia.org/wiki/Lagged_Fibonacci_generator)
 
 ## Floating point
 
