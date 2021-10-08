@@ -1,0 +1,22 @@
+# run with:    nohup ./emu.sh 4primes.3rd > primes.out
+# check with:  primes 2 `tail -1 primes.out` | diff - primes.out
+#
+# to do: use an array to store past primes and get an order of mag speed up
+
+: ?isprime
+  4` 1		           # first candidate for a factor
+  true loopif([            # loop over all factors
+    4inc			   
+    ?u4moddiv 4swap   	   # non-destructive moddiv
+    4or eq0if([drop(4) false]    # mod is zero, drop div and exit
+      [4mvDC 4dup 4mvCD 4sub     # compute factor - div
+       4sign ge0if(false true)   # div is less than factor, exit
+    ])
+  ])
+  4mvDC 4dup 4mvCD u4mod 4or	 # recompute mod - non-zero is prime
+;
+  
+: main
+  4` 2 ?u4putd putc('\n') # bodge the first prime
+  true while([4inc ?isprime if([?u4putd putc('\n')])])
+  ;
