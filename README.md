@@ -1,4 +1,4 @@
-# A Pathetic Instruction Set, a cut down Forth (third) and an emulator (emu)
+# A Pathetic Instruction Set, a cut down Forth (third), an assembler (asm) and an emulator (emu)
 
 I've wanted to build a very simple educational computer for decades, this is the archive of part of those dreams (there exists a more complete but somewhat messier archive [here](https://sites.google.com/site/drtonyrobinson/) and my current plans are at [The Blinking Computer](https://blinkingcomputer.org))
 
