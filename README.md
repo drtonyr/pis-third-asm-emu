@@ -23,16 +23,18 @@ Z	       | read Zero, write ignored
 P	       | Program counter
 I 	     | read 1 ( Identity), write Instruction
  
-All instructions were conditional on three status bits:
+There are eight condictions which govern wheher an instruction is executed:
  
-mnemonic | bits | condition
--------- | ---- | ---------
-nop      | 000  | never execute
-&nbsp;	 | 001  | always execute
-eq0      | 010  | last result == 0
-ne0      | 011  | last result != 0
-lt0      | 100  | last result < 0
-le0      | 101  | last result <= 0
+mnemonic | condition
+-------- | ---------
+nop      | never execute
+&nbsp;	  | always execute
+eq0      | last result == 0
+ne0      | last result != 0
+lt0      | last result < 0
+le0      | last result <= 0
+ge0	     | last result >= 0
+gt0	     | last result > 0
  
 Finally, here are the eight ALU operations (note - no multiply!):
  
@@ -98,16 +100,29 @@ Functions may be written in assembler or Third.   If they are written in Third t
 
 The last function address is that of return (Forth calls this exit).
 
-The main differences between Forth and Third are:
-
-
 Terminology:
 
-Functions/subroutines are called functions (Forth calls these words)
-The stacks are the data stack and the call stack (Forth calls these the stack and the return stack)
-Functions that operate on multiwords are prefixed by the size, e.g. 4dup duplicates 4 words on the stack (e.g. a 64 bit number)
-Functions consume their arguments by default (unless it's clear they don't like pick) unless they start with the letter q
-Functions that start with the letter q query the stack and do not consume, e.g. q4signword leaves the 4 word on the stack and adds the sign word (executes pick(4))
+  * Functions/subroutines are called functions (Forth calls these words)
+  * The stacks are the data stack and the call stack (Forth calls these the stack and the return stack)
+  * Functions that operate on multiwords are prefixed by the size, e.g. 4dup duplicates 4 words on the stack (e.g. a 64 bit number)
+  * Functions consume their arguments by default (unless it's clear they don't like pick) unless they start with the charcter ?
+  * Functions that start with the letter q query the stack and do not consume, e.g. ?4signword leaves the 4 word on the stack and adds the sign word (executes pick(4))
+
+The main differences between Forth and Third are:
+
+ Forth	| Third
+ ----- | -----
+ Forth a compiler, editor, operating system and filing system	| Third is just the compiler
+ Forth is purely stack based	| Third wses the stack for input and output of a function but can also take static arguments from the code
+ Forth as standards	| Third is tailored and unique to this processor
+ Forth is designed to be complete	| Third is complete enough for this processor
+ In Forth quoting of constants is implicit (inserting literal)	| In Third all constants have to be quoted with ' (or 2', 3' or 4')
+ Forth has multi-word control flow	| In Third all control flow operators are single word
+ 	 | Third has anonymous functions (mostly used for control flow)
+
+A few of these are worth elaborating on.  In Forth. if you want to add two to the top of the stack you push the value 2 in one operation and then add the top two items.   In Third you can call add(2) directly, it's more efficient and. IMO, easier to read.  The argument doesn't have to be a constant, it can be a sequence of fucntion calls (words) and this is how control flow.   So 'if(puts("Non-zero\n") puts("Zero\n"))' queries the top of the stack and if it's non-zero it calls the first function and if it's zero it calls the second.  Square brackets create anonymous functions. so if([2 mul]) will multiply by two if non-zero.
+
+
 Third may be called from assembler very efficiently:
 
     E = P + I          # docolon: Execution pointer to start of labels
@@ -131,7 +146,7 @@ A typical run looks like this:
     ./third2asm.py sys.3rd myCode.3rd post.3rd | ./asm.py | ./txt2bin > tmp.bin
     ./emu tmp.bin
 
-A third file, (extension .3rd) can contain both the third language and assembler.   The main system file is sys.3rd after which you can add your own code and it's followed by post.3rd
+A third file, (extension .3rd) can contain both the third language and assembler.   The main system file is sys.3rd after which you can add your own code and it's followed by post.3rd.  sys.3rd and post.3rd are almost 4,000 lines in total - it takes a lot of code to get from addition to IEEE floating point!
 
 asm.py compiles the assembler to a text format that contains the address, the binary value of that address and the original code.  This format is very useful for seeing what the memory contents really mean.
 
@@ -143,9 +158,15 @@ The code contains unit tests written in comments, utest.sh runs all the unit tes
 
 # Some comments on the code
 
+## basic data types
+
+Third has 16, 32 and 64 bit signed/unsigned integers and a custom 48 bit floating point as well as being able to read IEEE 734 floating point.   A bit of basic math is supported, such as fast integer square root.
+
+Internally characters are 16 bits using the obsolete UCS-2, the Basic Multilingual Plane of UTF-16.  Conversion from UCS-2 to UTF-8 is provided.
+
 ## Random numbers
 
-The code contains a novel and very efficient implementation
+The code contains a novel and very efficient implementation which returns a randomw number in (normally) only 16 instructions.  It's based on a 63,62 [Lagged Fibonacci Generator](https://en.wikipedia.org/wiki/Lagged_Fibonacci_generator)
 
 ## Floating point
 This processor plnne on a 'f3' format for floating point which used one 16-bit word for the significand and sign and two 16-bit words for the fractional part.   The sign is stored as the lowest bit, which makes it easy to shift off leaving a 16 bit signed number for the significand.   In floating point arithmetic often the sign is dealt with first, leaving positive numbers (sign zero), and this means the significands can be added/subtracted without any shifting.   The fractional part always has the top bit set, this means that the normal 32 bit integer routines can be used.
