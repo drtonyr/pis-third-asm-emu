@@ -2,7 +2,7 @@
 
 I've wanted to build a very simple educational computer for decades, this is the archive of part of those dreams (there exists a more complete but somewhat messier archive [here](https://sites.google.com/site/drtonyrobinson/) and my current plans are at [The Blinking Computer](https://blinkingcomputer.org))
 
-I planned on a 16 bit computer: instructions, memory, busses, everything was 16 bits wide.  My architecture had eight 'registers' and instructions were one of only three forms:
+I planned on a 16 bit processor: instructions, memory, busses, everything was 16 bits wide.  I expected to build it in discrete components using less than 1,000 transistors running at maybe 50kHz, so everything was very tight.  My architecture has eight 'registers' and instructions were one of only three forms:
 
 Form  | Example
 ----- | -------------
@@ -14,15 +14,15 @@ There were only five general purpose registers, two were constants and one was t
 
 Register | Usage
 -------- | -----
-A 	     | general purpose
+A 	      | general purpose
 B	       | general purpose
 C	       | general purpose ( Call stack)
-D 	     | general purpose ( Data stack)
-E 	     | general purpose ( Execution pointer)
+D 	      | general purpose ( Data stack)
+E 	      | general purpose ( Execution pointer)
 Z	       | read Zero, write ignored
 P	       | Program counter
-I 	     | read 1 ( Identity), write Instruction
- 
+I 	      | read 1 ( Identity), write Instruction
+  
 There are eight condictions which govern wheher an instruction is executed:
  
 mnemonic | condition
@@ -160,7 +160,7 @@ The code contains unit tests written in comments, utest.sh runs all the unit tes
 
 ## basic data types
 
-Third has 16, 32 and 64 bit signed/unsigned integers and a custom 48 bit floating point as well as being able to read IEEE 734 floating point.   A bit of basic math is supported, such as fast integer square root.
+Third has 16, 32 and 64 bit signed/unsigned integers and a custom 48 bit floating point as well as being able to read IEEE 734 floating point.   A bit of basic math is supported, such as fast integer square root, floating point trig was on the list but never completed.
 
 Internally characters are 16 bits using the obsolete UCS-2, the Basic Multilingual Plane of UTF-16.  Conversion from UCS-2 to UTF-8 is provided.
 
@@ -169,5 +169,6 @@ Internally characters are 16 bits using the obsolete UCS-2, the Basic Multilingu
 The code contains a novel and very efficient implementation which returns a randomw number in (normally) only 16 instructions.  It's based on a 63,62 [Lagged Fibonacci Generator](https://en.wikipedia.org/wiki/Lagged_Fibonacci_generator)
 
 ## Floating point
-This processor plnne on a 'f3' format for floating point which used one 16-bit word for the significand and sign and two 16-bit words for the fractional part.   The sign is stored as the lowest bit, which makes it easy to shift off leaving a 16 bit signed number for the significand.   In floating point arithmetic often the sign is dealt with first, leaving positive numbers (sign zero), and this means the significands can be added/subtracted without any shifting.   The fractional part always has the top bit set, this means that the normal 32 bit integer routines can be used.
+
+Third uses a 48 bit representation for floating point, one 16-bit word for the significand and sign and two 16-bit words for the fractional part.   The sign is stored as the lowest bit, which makes it easy to shift off leaving a 16 bit signed number for the significand.   In floating point arithmetic often the sign is dealt with first, leaving positive numbers (sign zero), and this means the significands can be added/subtracted without any shifting.   The fractional part always has the top bit set, this means that the normal 32 bit integer routines can be used.
 
