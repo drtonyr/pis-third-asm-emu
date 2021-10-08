@@ -180,3 +180,6 @@ The code contains a novel and very efficient implementation which returns a rand
 
 Third uses a 48 bit representation for floating point, one 16-bit word for the significand and sign and two 16-bit words for the fractional part.   The sign is stored as the lowest bit, which makes it easy to shift off leaving a 16 bit signed number for the significand.   In floating point arithmetic often the sign is dealt with first, leaving positive numbers (sign zero), and this means the significands can be added/subtracted without any shifting.   The fractional part always has the top bit set, this means that the normal 32 bit integer routines can be used.
 
+# And finally:
+
+Many people, myself included, cut our teeth on the ZX80 and BBC micro.  We longed for a Jupiter Ace and that itch has persisted since.  I'm now satisfied, indeed Third can be pronounced in an Irish accent as /tɜrd/.
