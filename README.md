@@ -156,6 +156,14 @@ emu.c runs the binary form.
 
 The code contains unit tests written in comments, utest.sh runs all the unit tests.
 
+## Quickstart
+
+You'll need a C compiler and Python3.   make.sh gives examples for compliling txt2bin and emu - start by running it.
+
+Now you can run any of the exmaple programs. 
+
+    ./emu.sh 4primes.3rd
+
 # Some comments on the code
 
 ## basic data types
