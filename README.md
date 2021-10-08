@@ -14,14 +14,14 @@ There were only five general purpose registers, two were constants and one was t
 
 Register | Usage
 -------- | -----
-A 	      | general purpose
+A 	     | general purpose
 B	       | general purpose
 C	       | general purpose ( Call stack)
-D 	      | general purpose ( Data stack)
-E 	      | general purpose ( Execution pointer)
+D 	     | general purpose ( Data stack)
+E 	     | general purpose ( Execution pointer)
 Z	       | read Zero, write ignored
 P	       | Program counter
-I 	      | read 1 ( Identity), write Instruction
+I 	     | read 1 ( Identity), write Instruction
   
 There are eight condictions which govern wheher an instruction is executed:
  
@@ -160,7 +160,7 @@ The code contains unit tests written in comments, utest.sh runs all the unit tes
 
 You'll need a C compiler and Python3.   make.sh gives examples for compliling txt2bin and emu - start by running it.
 
-Now you can run any of the exmaple programs. 
+Now you can run an exmaple program:
 
     ./emu.sh 4primes.3rd
 
