@@ -38,8 +38,8 @@ gt0	     | last result > 0
  
 Finally, here are the eight ALU operations (note - no multiply!):
  
-example       | descrition
-------------- | ----------
+example       | description
+------------- | -----------
 A = B & C     | bitwise AND
 A = B \| C    | bitwise OR
 A = B ^ C	    | bitwise Exclusive OR
