@@ -27,23 +27,23 @@ def pad[250]   # above is 6 words, pad to 256 to give OS call memory space
 #in  : main nop ` 0 nop ` 1 nop putStackd ;
 #out 0 1
 nop:  # does nothing
-  P = *E++  # execute the NEXT code
+  P = *E++   # execute the NEXT code
 
 
 #in  : main true putStackd ;
 #out 1
 true:  # push 1 to stack
   D = D + 1
-  *D = 1    # push it onto the data stack    
-  P = *E++  # execute the NEXT code
+  *D = 1     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main false putStackd ;
 #out 0
 false:  # push 0 to stack
   D = D + 1
-  *D = 0    # push it onto the data stack    
-  P = *E++  # execute the NEXT code
+  *D = 0     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 ## this chunk gives access to the main CPU opcodes
@@ -51,156 +51,156 @@ false:  # push 0 to stack
 #in  : main ` 0x00ff ` 0x0f0f and putStackx ;
 #out 0x000f
 and:  # pop two words, AND them and push the result
-  A = *D--  # pop data stack to A
-  B = *D    # pop data stack to B
-  A = A & B
-  *D = A    # push it onto the data stack    
-  P = *E++  # execute the NEXT code
+  A = *D--   # pop data stack to A
+  B = *D     # pop data stack to B
+  A = A & B  #!! could be *D = A & *D
+  *D = A     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 0x00ff ` 0x0f0f and putStackx ;
 #out 0x000f
 and(1):  # AND top of stack and next code word
-  A = *E++  # next code word to A
-  B = *D    # pop data stack to B
+  A = *E++   # next code word to A
+  B = *D     # pop data stack to B
   A = A & B
-  *D = A    # push it onto the data stack    
-  P = *E++  # execute the NEXT code
+  *D = A     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 0x00ff ` 0x0f0f ?and putStackx ;
 #out 0x00ff 0x0f0f 0x000f
 ?and:  # read two words, AND them and push the result
-  A = *D--  # read data stack to A
-  B = *D++  # read data stack to B
+  A = *D--   # read data stack to A
+  B = *D++   # read data stack to B
   A = A & B
   D = D + 1
-  *D = A    # push it onto the data stack    
-  P = *E++  # execute the NEXT code
+  *D = A     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 0x00ff ` 0x0f0f or putStackx ;
 #out 0x0fff
 or:  # pop two words, OR them and push the result
-  A = *D--  # pop data stack to A
-  B = *D    # pop data stack to B
+  A = *D--   # pop data stack to A
+  B = *D     # pop data stack to B
   A = A | B
-  *D = A    # push it onto the data stack    
-  P = *E++  # execute the NEXT code
+  *D = A     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 0x00ff ` 0x0f0f ?or putStackx ;
 #out 0x00ff 0x0f0f 0x0fff
 ?or:  # read two words, OR them and push the result
-  A = *D--  # read data stack to A
-  B = *D++  # read data stack to B
+  A = *D--   # read data stack to A
+  B = *D++   # read data stack to B
   A = A | B
   D = D + 1
-  *D = A    # push it onto the data stack    
-  P = *E++  # execute the NEXT code
+  *D = A     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 0x00ff ` 0x0f0f xor putStackx ;
 #out 0x0ff0
 xor:  # pop two words, XOR them and push the result
-  A = *D--  # pop data stack to A
-  B = *D    # pop data stack to B
+  A = *D--   # pop data stack to A
+  B = *D     # pop data stack to B
   A = A ^ B
-  *D = A    # push it onto the data stack    
-  P = *E++  # execute the NEXT code
+  *D = A     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 0x00ff xor(0x0f0f) putStackx ;
 #out 0x0ff0
 xor(1):  # pop a word and XOR with the following code item and push the result
-  A = *E++  # read next code word to A
-  B = *D    # pop data stack to B
+  A = *E++   # read next code word to A
+  B = *D     # pop data stack to B
   A = A ^ B
-  *D = A    # push it onto the data stack    
-  P = *E++  # execute the NEXT code
+  *D = A     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 0x00ff ` 0x0f0f ?xor putStackx ;
 #out 0x00ff 0x0f0f 0x0ff0
 ?xor:  # read two words, XOR them and push the result
-  A = *D--  # read data stack to A
-  B = *D++  # read data stack to B
+  A = *D--   # read data stack to A
+  B = *D++   # read data stack to B
   A = A ^ B
   D = D + 1
-  *D = A    # push it onto the data stack    
-  P = *E++  # execute the NEXT code
+  *D = A     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 40 ` 2 add putStackd ;
 #out 42
 add:  # pop two words, add them and push the result
-  A = *D--  # pop data stack to A
-  B = *D    # pop data stack to B
+  A = *D--   # pop data stack to A
+  B = *D     # pop data stack to B
   A = A + B
-  *D = A    # push it onto the data stack    
-  P = *E++  # execute the NEXT code
+  *D = A     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 40 add(2) putStackd ;
 #out 42
 add(1):  # add the argument to top of stack
-  A = *E++  # next code item is the number to add
-  B = *D    # pop data stack to B
+  A = *E++   # next code item is the number to add
+  B = *D     # pop data stack to B
   A = B + A
-  *D = A    # push it onto the data stack    
-  P = *E++  # execute the NEXT code
+  *D = A     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 40 ` 2 ?add putStackd ;
 #out 40 2 42
 ?add:  # read two words, add them and push the result
-  A = *D--  # read data stack to A
-  B = *D++  # read data stack to B
+  A = *D--   # read data stack to A
+  B = *D++   # read data stack to B
   A = A + B
   D = D + 1
-  *D = A    # push it onto the data stack    
-  P = *E++  # execute the NEXT code
+  *D = A     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 40 add(2) putStackd ;
 #out 42
 add(1):  # add the argument to top of stack
-  A = *E++  # next code item is the number to add
-  B = *D    # pop data stack to B
+  A = *E++   # next code item is the number to add
+  B = *D     # pop data stack to B
   A = B + A
-  *D = A    # push it onto the data stack    
-  P = *E++  # execute the NEXT code
+  *D = A     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 44 ` 2 sub putStackd ;
 #out 42
 sub:  # subtract - pop two words, subtract them and push the result
-  A = *D--  # pop data stack to A
-  B = *D    # pop data stack to B
+  A = *D--   # pop data stack to A
+  B = *D     # pop data stack to B
   A = B - A
-  *D = A    # push it onto the data stack    
-  P = *E++  # execute the NEXT code
+  *D = A     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 44 ` 2 ?sub putStackd ;
 #out 44 2 42
 ?sub:  # subtract - read two words, subtract them and push the result
   D = D - 1
-  A = *D++  # read data stack to A
-  B = *D++  # read data stack to B
+  A = *D++   # read data stack to A
+  B = *D++   # read data stack to B
   A = A - B
-  *D = A    # push it onto the data stack    
-  P = *E++  # execute the NEXT code
+  *D = A     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 44 sub(2) putStackd ;
 #out 42
 sub(1):  # subtract the argument from top of stack
-  A = *E++  # next code item is the number to subtract
-  B = *D    # pop data stack to B
+  A = *E++   # next code item is the number to subtract
+  B = *D     # pop data stack to B
   A = B - A
-  *D = A    # push it onto the data stack    
-  P = *E++  # execute the NEXT code
+  *D = A     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main 4` 0 4or putStackd ;
@@ -264,45 +264,45 @@ mul2:  # multiply the top of stack by two
 #out -42
 div2:  # divide the signed top of stack by two (ignore the 1 bit remainder)
   A = *D  # pop data stack to A
-  Z = A + A       # set carry if high bit set
+  Z = A + A  # set carry if high bit set
   cin A = A >> 1  # shift left with carry
-  *D = A          # push it onto the data stack
-  P = *E++        # execute the NEXT code
+  *D = A     # push it onto the data stack
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 84 udiv2 putStackd ;
 #out 42
 udiv2:  # divide the unsigned top of stack by two (ignore the 1 bit remainder)
-  A = *D      # pop data stack to A
-  A = A >> 1  # udiv2
-  *D = A      # push it onto the data stack
-  P = *E++    # execute the NEXT code
+  A = *D     # pop data stack to A
+  A = A >> 1 # udiv2
+  *D = A     # push it onto the data stack
+  P = *E++   # execute the NEXT code
 
 
 exit:  # pass control back to the OS returning top of stack
-  A = *D      # pop data stack to A
-  *I = A      # write exit status - CAN'T WRITE TO I
-  A = OSexit  # load A with OSexit
-  *Z = A      # write OSexit - and that's the last instruction to happen
+  A = *D     # pop data stack to A
+  *I = A     # write exit status - CAN'T WRITE TO I
+  A = OSexit # load A with OSexit
+  *Z = A     # write OSexit - and that's the last instruction to happen
 
 
 getw:  # read a single binary word from stdin to the data stack
-  A = OSgetw  # load A with OSgetc
-  *Z = A      # write OSgetw
-  A = *I      # read word from stdin
+  A = OSgetw # load A with OSgetc
+  *Z = A     # write OSgetw
+  A = *I     # read word from stdin
   D = D + 1
-  *D = A      # push it onto the data stack    
-  P = *E++    # execute the NEXT code
+  *D = A     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
-#in  : main ` 65 putw ;
-#out A
+#in  : main ` 0xa3c2 putw ;
+#out £
 putw:  # write a single binary word to stdout from the data stack      
-  A = *D--    # pop data stack to A
-  *I = A      # write word
-  A = OSputw  # load A with OSputw
-  *Z = A      # write OSputw
-  P = *E++    # execute the NEXT code
+  A = *D--   # pop data stack to A
+  *I = A     # write word
+  A = OSputw # load A with OSputw
+  *Z = A     # write OSputw
+  P = *E++   # execute the NEXT code
 
 
 # we use the obsolete UCS-2, which is the Basic Multilingual Plane of UTF-16
@@ -332,7 +332,7 @@ putc:  # write a single character to stdout from the data stack
 
 #in  : main putc('h') putc('i') putc('\n') ;
 #out hi
-putc(1):  # write a single character from code to stdout      
+putc(1):     # write a single character from code to stdout      
   A = *E++   # next code item is the character to put
   *I = A     # write character
   A = OSputc # load A with OSputc
@@ -349,15 +349,15 @@ puts:  # write a null terminated string to the selected stream
 
 #in  : main puts("Hello World!\n") putStackd ;
 #out Hello World!
-puts(1):        # write a null terminated string to the selected stream
-  A = *E++      # next code item is the address of the string
+puts(1):     # write a null terminated string to the selected stream
+  A = *E++   # next code item is the address of the string
   _puts_fromA:
-  B = *A++      # load character
-  Z = B         # set flags
+  B = *A++   # load character
+  Z = B      # set flags
   eq0 P = *E++  # execute the NEXT code
-  *I = B        # write character
-  B = OSputc    # load B with OSputc
-  *Z = B        # write OSputc
+  *I = B     # write character
+  B = OSputc # load B with OSputc
+  *Z = B     # write OSputc
   P = _puts_fromA
 
 
@@ -377,71 +377,71 @@ f2put:  # write a 2f stdout from the data stack using the host printf
 #in  : main f3` 3.14159265 f3put putStackx ;
 #out 3.14159
 f3put:  # write a 3f stdout from the data stack using the host printf
-  B = 3     # storage location
-  A = *D--  # pop sign/exponent word from data stack to A
-  *B-- = A  # store sign/exponent in m[3]
-  A = *D--  # pop low word from data stack to A
-  *B-- = A  # store low word in m[2]
-  A = *D--  # pop high word from data stack to A
-  *B-- = A  # store high word in m[1]
+  B = 3      # storage location
+  A = *D--   # pop sign/exponent word from data stack to A
+  *B-- = A   # store sign/exponent in m[3]
+  A = *D--   # pop low word from data stack to A
+  *B-- = A   # store low word in m[2]
+  A = *D--   # pop high word from data stack to A
+  *B-- = A   # store high word in m[1]
   A = OSf3put # load A with OSputf
-  *B = A    # write OSf3put
-  P = *E++  # execute the NEXT code
+  *B = A     # write OSf3put
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` [ putdc('\n') ] ` 42 swap exec ;
 #out 42
 `:  # push the next word onto the data stack
-  A = *E++  # get the next word from the execution stack
+  A = *E++   # get the next word from the execution stack
   D = D + 1
-  *D = A    # push it onto the data stack    
-  P = *E++  # execute the NEXT code
+  *D = A     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 2`:  # push the next two words onto the data stack
 q2`: # ( q2` is the same code)
 f2`: # ( f2` is the same code)
-  A = *E++  # get the next word from the execution stack
+  A = *E++   # get the next word from the execution stack
   D = D + 1
-  *D++ = A  # push it onto the data stack    
-  A = *E++  # get the next word from the execution stack
-  *D = A    # push it onto the data stack    
-  P = *E++  # execute the NEXT code
+  *D++ = A   # push it onto the data stack    
+  A = *E++   # get the next word from the execution stack
+  *D = A     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 3`:  # push the next three words onto the data stack
 f3`: # ( f3` is the same code)
-  A = *E++  # get the next word from the execution stack
+  A = *E++   # get the next word from the execution stack
   D = D + 1
-  *D++ = A  # push it onto the data stack    
-  A = *E++  # get the next word from the execution stack
-  *D++ = A  # push it onto the data stack    
-  A = *E++  # get the next word from the execution stack
-  *D = A    # push it onto the data stack    
-  P = *E++  # execute the NEXT code
+  *D++ = A   # push it onto the data stack    
+  A = *E++   # get the next word from the execution stack
+  *D++ = A   # push it onto the data stack    
+  A = *E++   # get the next word from the execution stack
+  *D = A     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main 4` -1 4putx ;
 #out 0xffffffffffffffff
 4`:  # push the next four words onto the data stack
-  A = *E++  # get the next word from the execution stack
+  A = *E++   # get the next word from the execution stack
   D = D + 1
-  *D++ = A  # push it onto the data stack    
-  A = *E++  # get the next word from the execution stack
-  *D++ = A  # push it onto the data stack    
-  A = *E++  # get the next word from the execution stack
-  *D++ = A  # push it onto the data stack    
-  A = *E++  # get the next word from the execution stack
-  *D = A    # push it onto the data stack    
-  P = *E++  # execute the NEXT code
+  *D++ = A   # push it onto the data stack    
+  A = *E++   # get the next word from the execution stack
+  *D++ = A   # push it onto the data stack    
+  A = *E++   # get the next word from the execution stack
+  *D++ = A   # push it onto the data stack    
+  A = *E++   # get the next word from the execution stack
+  *D = A     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 42 dup putStackd ;
 #out 42 42
 dup:  # duplicate the top of stack
-  A = *D++  # copy top of data stack to A
-  *D = A    # push it back onto the data stack    
-  P = *E++  # execute the NEXT code
+  A = *D++   # copy top of data stack to A
+  *D = A     # push it back onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 42 ` 43 2dup putStackd ;
@@ -453,7 +453,7 @@ dup:  # duplicate the top of stack
   *D++ = B
   B = *A
   *D = B
-  P = *E++  # execute the NEXT code
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 0 ` 1 ` 2 ` 3 4dup putStackd ;
@@ -470,7 +470,7 @@ dup:  # duplicate the top of stack
   *D++ = B
   B = *A
   *D = B
-  P = *E++  # execute the NEXT code
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 0 ` 1 ` 2 ` 3 ` 4 ` 5 ` 6 ` 7 8dup putStackd ;
@@ -495,7 +495,7 @@ dup:  # duplicate the top of stack
   *D++ = B
   B = *A
   *D = B
-  P = *E++  # execute the NEXT code
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 42 ` 0 ` 2 ndup putStackd ;
@@ -512,8 +512,8 @@ ndup:  # duplicate the top n items on the stack
     gt0 P = _ndup_loop
 
   D = D - 1
-  E = *C    # restore E
-  P = *E++  # execute the NEXT code
+  E = *C     # restore E
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 0 ` 1 ` 2 ` 3 ` 2 pick putStackd ;
@@ -566,19 +566,19 @@ storeD(1):  # store the top item n down - like inverse of pick()
 #in  : main ` 0 ` 1 ` 2 ` 3 ` 4 ` 5 ` 6 ` 7 ` 8 ` 9 4storeD(2) putStackd ;
 #out 6 7 8 9 4 5
 4storeD(1):  # store the top 4 items n down - n does not include the 4 popped
-  A = *E++  # read n from the next code word
-  B = 4     # adjust for chunk size
+  A = *E++   # read n from the next code word
+  B = 4      # adjust for chunk size
   A = A + B
   A = D - A
-  B = *D--  # pop the value to store in the stack
-  *A-- = B  # store value
-  B = *D--  # pop the value to store in the stack
-  *A-- = B  # store value
-  B = *D--  # pop the value to store in the stack
-  *A-- = B  # store value
-  B = *D--  # pop the value to store in the stack
-  *A-- = B  # store value
-  P = *E++  # execute the NEXT code
+  B = *D--   # pop the value to store in the stack
+  *A-- = B   # store value
+  B = *D--   # pop the value to store in the stack
+  *A-- = B   # store value
+  B = *D--   # pop the value to store in the stack
+  *A-- = B   # store value
+  B = *D--   # pop the value to store in the stack
+  *A-- = B   # store value
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 42 ` 24 drop putStackd ;
@@ -591,9 +591,9 @@ drop:  # delete the top of stack
 #in  : main ` 0 ` 1 ` 2 ` 3 ` 4 ` 5 drop(3) putStackd ;
 #out 0 1 2
 drop(1):  # drop arg words from data stack
-  A = *E++  # next code item is n
-  D = D - A       # drop n
-  P = *E++  # execute the NEXT code
+  A = *E++   # next code item is n
+  D = D - A  # drop n
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 42 ` 24 drop putStackd ;
@@ -605,10 +605,10 @@ undrop:  # undelete the top of stack
 
 #in  : main ` 0 ` 1 ` 2 ` 3 ` 4 ` 5 drop(3) putStackd ;
 #out 0 1 2
-undrop(1):  # undelte arg words from data stack
-  A = *E++  # next code item is n
-  D = D + A       # drop n
-  P = *E++  # execute the NEXT code
+undrop(1):   # undelte arg words from data stack
+  A = *E++   # next code item is n
+  D = D + A  # drop n
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 42 ` 24 over putStackd ;
@@ -647,41 +647,41 @@ nover:  # copy the penultimate group of n words to top of stack
   B = D - B  # B now points to data to copy
 
   _nover_loop:
-    E = *B++  # load X0
-    *D++ = E  # store X0
+    E = *B++ # load X0
+    *D++ = E # store X0
     A = A - 1
     gt0 P = _nover_loop
 
   D = D - 1
-  E = *C    # restore E
-  P = *E++  # execute the NEXT code
+  E = *C     # restore E
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 1 ` 2 ` 3 swap putStackd ;
 #out 1 3 2
 swap:  # swap the top two items on the stack
-  A = *D--  # pop data stack to A
-  B = *D    # pop data stack to B
-  *D++ = A  # push it onto the data stack    
-  *D = B    # push it onto the data stack    
-  P = *E++  # execute the NEXT code
+  A = *D--   # pop data stack to A
+  B = *D     # pop data stack to B
+  *D++ = A   # push it onto the data stack    
+  *D = B     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 0 ` 1 ` 2 ` 3 2swap putStackd ;
 #out 2 3 0 1
 2swap: # swap two lots of two words on the stack
-  *C = E    # need register space so push E to call stack
-  A = *D--  # read X0
-  B = *D--  # read X1
-  E = *D    # read Y0
-  *D-- = A  # write X0
-  A = *D    # read Y1
-  *D++ = B  # write X1
-  D = D + 1 # skip X0, already written
-  *D++ = A  # write Y1
-  *D = E    # write Y0
-  E = *C    # restore E
-  P = *E++  # execute the NEXT code
+  *C = E     # need register space so push E to call stack
+  A = *D--   # read X0
+  B = *D--   # read X1
+  E = *D     # read Y0
+  *D-- = A   # write X0
+  A = *D     # read Y1
+  *D++ = B   # write X1
+  D = D + 1  # skip X0, already written
+  *D++ = A   # write Y1
+  *D = E     # write Y0
+  E = *C     # restore E
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 0 ` 1 ` 2 ` 3 ` 4 ` 5 ` 6 ` 7 4swap putStackd ;
@@ -741,9 +741,9 @@ swap:  # swap the top two items on the stack
 #in  : main ` 1 ` 2 ` 3 nip putStackd ;
 #out 1 3
 nip:  # delete the penultimate item
-  A = *D--  # pop top of stack
-  *D = A    # write to one down
-  P = *E++  # execute the NEXT code
+  A = *D--   # pop top of stack
+  *D = A     # write to one down
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 1 ` 2 ` 3 ` 4 ` 1 del putStackd ;
@@ -762,19 +762,19 @@ del:  # delete the N`th element deep in the data stack to the top,
 #out 1 3 4
 del(1):  # delete the N`th element deep in the data stack to the top,
          # closing the hole left in the stack.  N > 0 or bad things happen.
-  A = *E++  # read arg to A
+  A = *E++   # read arg to A
   _del_fromA:
-  *C = E  # need space so push E to call stack
-  D = D - A       # point to pull data
-  B = D + 1       # B is one above D, read from B, write to D
+  *C = E     # need space so push E to call stack
+  D = D - A  # point to pull data
+  B = D + 1  # B is one above D, read from B, write to D
     _del_loop:
-    E = *B++      # read the one above
-    *D++ = E      # write to the one below
-    A = A - 1	  # decrement counter and set flags
+    E = *B++   # read the one above
+    *D++ = E   # write to the one below
+    A = A - 1  # decrement counter and set flags
     gt0 P = _del_loop  # loop if not done
-  D = D - 1	  # D point to top of full stack
-  E = *C    # restore E
-  P = *E++  # execute the NEXT code
+  D = D - 1  # D point to top of full stack
+  E = *C     # restore E
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 1 ` 2 ` 3 ` 4 ` 1 roll putStackd ;
@@ -785,7 +785,7 @@ del(1):  # delete the N`th element deep in the data stack to the top,
 #out 2 3 4 1
 roll:  # Pull the N`th element deep in the data stack to the top,
        # closing the hole left in the stack.  N > 0!
-  A = *D--  # pop data stack to A
+  A = *D--   # pop data stack to A
   _roll_fromA:
   *C-- = E   # need space so push E to call stack
   D = D - A  # point to pull data
@@ -797,47 +797,47 @@ roll:  # Pull the N`th element deep in the data stack to the top,
     *D++ = E   # write to the one below
     A = A - 1  # decrement counter and set flags
     ne0 P = _roll_loop  # loop if not done
-  E = *C++  # pull back top of stack
-  *D = E    # push it
-  E = *C    # restore E
-  P = *E++  # execute the NEXT code
+  E = *C++   # pull back top of stack
+  *D = E     # push it
+  E = *C     # restore E
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 1 ` 2 ` 3 ` 4 roll(2) putStackd ;
 #out 1 3 4 2
 roll(1):  # Pull the N`th element deep in the data stack to the top,
           # closing the hole left in the stack.  N > 0!
-  A = *E++  # read arg to A
+  A = *E++   # read arg to A
   P = _roll_fromA # jump to roll
 
 
 #in  : main ` 1 ` 2 ` 3 rot putStackd ;
 #out 2 3 1
 rot:  # rotate the top 3 on stack ( a b c -- b c a )
-  *C = E    # need space so push E to call stack
-  A = *D--  # pop data stack to A
-  B = *D--  # pop data stack to B
-  E = *D    # pop data stack to E
-  *D++ = B  # push it onto the data stack    
-  *D++ = A  # push it onto the data stack    
-  *D = E    # push it onto the data stack    
-  E = *C    # restore E
-  P = *E++  # execute the NEXT code
+  *C = E     # need space so push E to call stack
+  A = *D--   # pop data stack to A
+  B = *D--   # pop data stack to B
+  E = *D     # pop data stack to E
+  *D++ = B   # push it onto the data stack    
+  *D++ = A   # push it onto the data stack    
+  *D = E     # push it onto the data stack    
+  E = *C     # restore E
+  P = *E++   # execute the NEXT code
 
 #AJR INDETN TO HERE
 
 #in  : main ` 1 ` 2 ` 3 -rot putStackd ;
 #out 1 3 2
 -rot:  # rotate the top 3 on stack ( a b c -- a c b )
-  *C = E    # need space so push E to call stack
-  A = *D--  # pop data stack to A
-  B = *D--  # pop data stack to B
-  E = *D    # pop data stack to E
-  *D++ = E  # push it onto the data stack    
-  *D++ = A  # push it onto the data stack    
-  *D = B    # push it onto the data stack    
-  E = *C    # restore E
-  P = *E++  # execute the NEXT code
+  *C = E     # need space so push E to call stack
+  A = *D--   # pop data stack to A
+  B = *D--   # pop data stack to B
+  E = *D     # pop data stack to E
+  *D++ = E   # push it onto the data stack    
+  *D++ = A   # push it onto the data stack    
+  *D = B     # push it onto the data stack    
+  E = *C     # restore E
+  P = *E++   # execute the NEXT code
 
 
 C:  # push the address of the top of call stack onto the top of data stack
@@ -875,32 +875,32 @@ inc:  # add one to the top of the stack.   FORTH calls this 1+
 #in  : main 2` 42424241 2inc 2putd putStackd ;
 #out 42424242
 2inc:  # add one to the 2 word int on of the stack.
-  A = *D         # load low bits from top of data stack
-  A = A + 1      # increment
-  *D-- = A       # store low bits back onto the data stack    
-  A = *D         # load high bits from one less than top of data stack
-  cin A = A + 0	 # add in the carry
-  *D++ = A       # store high bits back onto the data stack  
-  P = *E++       # execute the NEXT code
+  A = *D     # load low bits from top of data stack
+  A = A + 1  # increment
+  *D-- = A   # store low bits back onto the data stack    
+  A = *D     # load high bits from one less than top of data stack
+  cin A = A + 0  # add in the carry
+  *D++ = A   # store high bits back onto the data stack  
+  P = *E++   # execute the NEXT code
 
 
 #in  : main 4` 41 4inc 4putd putStackd ;
 #out 42
 4inc:  # add one to the 4 word int on top of the stack.
-  B = D          # don't touch D as don`t want stack to change
-  A = *B         # load X0 bits from top of data stack
-  A = A + 1      # increment
-  *B-- = A       # store X0 bits back onto the data stack    
-  A = *B         # load X1 bits from one less than top of data stack
-  cin A = A + 0	 # add in the carry
-  *B++ = A       # store X1 bits back onto the data stack  
-  A = *B         # load X2 bits from one less than top of data stack
-  cin A = A + 0	 # add in the carry
-  *B++ = A       # store X2 bits back onto the data stack  
-  A = *B         # load X3 bits from one less than top of data stack
-  cin A = A + 0	 # add in the carry
-  *B++ = A       # store X3 bits back onto the data stack  
-  P = *E++       # execute the NEXT code
+  B = D      # don't touch D as don`t want stack to change
+  A = *B     # load X0 bits from top of data stack
+  A = A + 1  # increment
+  *B-- = A   # store X0 bits back onto the data stack    
+  A = *B     # load X1 bits from one less than top of data stack
+  cin A = A + 0  # add in the carry
+  *B++ = A   # store X1 bits back onto the data stack  
+  A = *B     # load X2 bits from one less than top of data stack
+  cin A = A + 0  # add in the carry
+  *B++ = A   # store X2 bits back onto the data stack  
+  A = *B     # load X3 bits from one less than top of data stack
+  cin A = A + 0  # add in the carry
+  *B++ = A   # store X3 bits back onto the data stack  
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 43 dec putStackd ;
@@ -920,12 +920,12 @@ dec:  # subtract one from the top of the stack.   FORTH calls this 1-
 #out 0
 eq:  # pop two words, compare and push 1 if equal, 0 otherwise
 ==:  # depracated name
-  A = *D--    # pop data stack to A
-  B = *D      # pop data stack to B
+  A = *D--   # pop data stack to A
+  B = *D     # pop data stack to B
   Z = A - B
-  eq0 *D = 1  # push 1 onto the data stack    
-  ne0 *D = 0  # push 0 onto the data stack    
-  P = *E++    # execute the NEXT code
+  eq0 *D = 1 # push 1 onto the data stack    
+  ne0 *D = 0 # push 0 onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 42 ` 42 != putStackd ;
@@ -934,30 +934,30 @@ eq:  # pop two words, compare and push 1 if equal, 0 otherwise
 #out 1
 ne:  # pop two words, compare and push 1 if not equal, 0 otherwise
 !=:  # depracated name
-  A = *D--    # pop data stack to A
-  B = *D      # pop data stack to B
+  A = *D--   # pop data stack to A
+  B = *D     # pop data stack to B
   Z = A - B
-  ne0 *D = 1  # push 1 onto the data stack    
-  eq0 *D = 0  # push 0 onto the data stack    
-  P = *E++    # execute the NEXT code
+  ne0 *D = 1 # push 1 onto the data stack    
+  eq0 *D = 0 # push 0 onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 ?eq(1):  # peek at top of stack and compare to next code word and push 1 if equal, 0 otherwise
-  A = *D++    # read top of data stack to A
-  B = *E++    # read next code word to B
+  A = *D++   # read top of data stack to A
+  B = *E++   # read next code word to B
   Z = A - B
-  eq0 *D = 1  # push 1 onto the data stack    
-  ne0 *D = 0  # push 0 onto the data stack    
-  P = *E++    # execute the NEXT code
+  eq0 *D = 1 # push 1 onto the data stack    
+  ne0 *D = 0 # push 0 onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 ?ne(1):  # peek at top of stack and compare to next code word and push 1 if not equal, 0 otherwise
-  A = *D++    # read top of data stack to A
-  B = *E++    # read next code word to B
+  A = *D++   # read top of data stack to A
+  B = *E++   # read next code word to B
   Z = A - B
-  ne0 *D = 1  # push 1 onto the data stack    
-  eq0 *D = 0  # push 0 onto the data stack    
-  P = *E++  # execute the NEXT code
+  ne0 *D = 1 # push 1 onto the data stack    
+  eq0 *D = 0 # push 0 onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 1 >0 putStackd ;
@@ -967,11 +967,11 @@ ne:  # pop two words, compare and push 1 if not equal, 0 otherwise
 #in  : main ` -1 >0 putStackd ;
 #out 0
 >0:  # replace top of stack by 1 if >0 else 0
-  A = *D      # pop data stack to A
-  Z = A       # set flags
-  gt0 *D = 1  # push 1 onto the data stack  
-  le0 *D = 0  # push 0 onto the data stack  
-  P = *E++    # execute the NEXT code
+  A = *D     # pop data stack to A
+  Z = A      # set flags
+  gt0 *D = 1 # push 1 onto the data stack  
+  le0 *D = 0 # push 0 onto the data stack  
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 4 ` 2 > putStackd ;
@@ -981,12 +981,12 @@ ne:  # pop two words, compare and push 1 if not equal, 0 otherwise
 #in  : main ` -4 ` 0 > putStackd ;
 #out 0
 >:  # compare top two stack items push 1 if > else 0
-  A = *D--    # pop data stack to A
-  B = *D      # pop data stack to A
-  Z = B - A   # set flags
-  gt0 *D = 1  # push 1 onto the data stack  
-  le0 *D = 0  # push 0 onto the data stack  
-  P = *E++    # execute the NEXT code
+  A = *D--   # pop data stack to A
+  B = *D     # pop data stack to A
+  Z = B - A  # set flags
+  gt0 *D = 1 # push 1 onto the data stack  
+  le0 *D = 0 # push 0 onto the data stack  
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 1 >0 putStackd ;
@@ -996,11 +996,11 @@ ne:  # pop two words, compare and push 1 if not equal, 0 otherwise
 #in  : main ` -1 >0 putStackd ;
 #out 0
 >0:  # replace top of stack by 1 if >0 else 0
-  A = *D      # pop data stack to A
-  Z = A       # set flags
-  gt0 *D = 1  # push 1 onto the data stack  
-  le0 *D = 0  # push 0 onto the data stack  
-  P = *E++    # execute the NEXT code
+  A = *D     # pop data stack to A
+  Z = A      # set flags
+  gt0 *D = 1 # push 1 onto the data stack  
+  le0 *D = 0 # push 0 onto the data stack  
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 1 <0 putStackd ;
@@ -1011,10 +1011,10 @@ ne:  # pop two words, compare and push 1 if not equal, 0 otherwise
 #out 1
 <0:  # replace top of stack by 1 if <0 else 0
   A = *D  # pop data stack to A
-  Z = A       # set flags
-  lt0 *D = 1  # push 1 onto the data stack  
-  ge0 *D = 0  # push 0 onto the data stack  
-  P = *E++    # execute the NEXT code
+  Z = A      # set flags
+  lt0 *D = 1 # push 1 onto the data stack  
+  ge0 *D = 0 # push 0 onto the data stack  
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 42 ` 41 max putStackd ;
@@ -1074,18 +1074,18 @@ min(1):  # find min of the top of stack and arg and push the result
 #in  : main ` -6 ` -7 mul putStackd ;
 #out 42
 mul:  # signed word multiply
-  A = *D--  # pop data stack to A
-  B = *D    # pop data stack to B
+  A = *D--   # pop data stack to A
+  B = *D     # pop data stack to B
 
   *C = E  # need space so push E to call stack
 
-       	         ## reduce the number of times the main code has to run by
-		 ## swaping A and B so that abs(A) is smallest and B has sign
-		 ## unoptim 3 inst, optim 11 inst, slower if only saves 1 loop
+             ## reduce the number of times the main code has to run by
+             ## swaping A and B so that abs(A) is smallest and B has sign
+             ## unoptim 3 inst, optim 11 inst, slower if only saves 1 loop
   E = A ^ B      # top bit of E is now final sign
   Z = A          # set flags
   lt0 A = 0 - A  # if A is negative invert A
-  Z = B          # set flags
+  Z = B      # set flags
   lt0 B = 0 - B  # if B is negative invert B
   Z = A - B      # is A bigger than B?
   gt0 A = A ^ B  # swap A and B so that B is biggest (geeky XOR swap)
@@ -1100,11 +1100,11 @@ mul:  # signed word multiply
     gt0 E = E + A  # if bit set add in A (shifted)
     A = A + A      # shift up A
     B = B >> 1     # shift down B
-      	     	   # loop if we haven't yet shifted down to zero
+                   # loop if we haven't yet shifted down to zero
     ne0 P = mul_s16_s16_loop
-  *D = E  # push result onto the data stack    
-  E = *C  # restore E from call stack
-  P = *E++  # execute the NEXT code
+  *D = E     # push result onto the data stack    
+  E = *C     # restore E from call stack
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 1024 ` 1024 umulxx putStackd ;
@@ -1112,14 +1112,14 @@ mul:  # signed word multiply
 #in  : main ` 32000 ` 31000 umulxx putStackd ;
 #out 15136 -18432
 umulxx:  # unsigned word multiply with 2word output
-  A = *D--  # pop data stack to A
-  B = *D    # pop data stack to B
-  *C-- = E  # need space so push E to call stack
-  *C = D    # need space so push D to call stack
-  *I = C    # need space to push C to address 1
+  A = *D--   # pop data stack to A
+  B = *D     # pop data stack to B
+  *C-- = E   # need space so push E to call stack
+  *C = D     # need space so push D to call stack
+  *I = C     # need space to push C to address 1
 
-       	     ## reduce the number of times the main code has to run by
-	     ## swaping A and B so that A is smallest
+             ## reduce the number of times the main code has to run by
+             ## swaping A and B so that A is smallest
   Z = A - B  # is A bigger than B?
   gt0 D = A  # swap A and B so that B is biggest
   gt0 A = B  # swap A and B so that B is biggest
@@ -1138,14 +1138,14 @@ umulxx:  # unsigned word multiply with 2word output
     cin C = C + C  # shift up BC
     A = A >> 1     # shift down A
     ne0 P = _umulxx_loop   # loop if we haven't yet shifted down to zero
-  A = D     # move result from DE to AB
-  B = E     # move result from DE to AB
-  C = *I    # restore C from address 1
-  D = *C++  # restore D from call stack  
-  E = *C    # restore E from call stack
-  *D++ = B  # push high bits of result onto the data stack    
-  *D = A    # push low bits of result onto the data stack    
-  P = *E++  # execute the NEXT code
+  A = D      # move result from DE to AB
+  B = E      # move result from DE to AB
+  C = *I     # restore C from address 1
+  D = *C++   # restore D from call stack  
+  E = *C     # restore E from call stack
+  *D++ = B   # push high bits of result onto the data stack    
+  *D = A     # push low bits of result onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 1024 ` 1024 mulxx putStackd ;
@@ -1153,16 +1153,16 @@ umulxx:  # unsigned word multiply with 2word output
 #in  : main ` 32000 ` 31000 mulxx putStackd ;
 #out 15136 -18432
 mulxx:  # signed word multiply with s16 input and s32 output
-  A = *D--  # pop data stack to A
-  B = *D    # pop data stack to B
+  A = *D--   # pop data stack to A
+  B = *D     # pop data stack to B
 
-  *C-- = E  # need space so push E to call stack
-  *C = D    # need space so push D to call stack
-  *I = C    # need space to push C to address 1
+  *C-- = E   # need space so push E to call stack
+  *C = D     # need space so push D to call stack
+  *I = C     # need space to push C to address 1
 
-       	         ## reduce the number of times the main code has to run by
-		 ## swaping A and B so that abs(A) is smallest and B has sign
-		 ## unoptim 3 inst, optim 11 inst, saves >1 loop so good
+                 ## reduce the number of times the main code has to run by
+                 ## swaping A and B so that abs(A) is smallest and B has sign
+                 ## unoptim 3 inst, optim 11 inst, saves >1 loop so good
   C = A ^ B      # top bit of C is now final sign
   Z = A          # set flags
   lt0 A = 0 - A  # if A is negative invert A
@@ -1182,7 +1182,7 @@ mulxx:  # signed word multiply with s16 input and s32 output
   E = 0          # set high accumulator to zero
   mul_s16_s32_loop:
     Z = A & 1      # test a single bit
-      	    	   # # if bit clear then skip addition
+                   # # if bit clear then skip addition
     eq0 P = mul_s16_s32_skip
     D = D + B      # if bit set add in BC (shifted)
     cin E = E + C
@@ -1191,14 +1191,14 @@ mulxx:  # signed word multiply with s16 input and s32 output
     cin C = C + C  # shift up BC
     A = A >> 1     # shift down A
     ne0 P = mul_s16_s32_loop  # loop if we haven't yet shifted down to zero
-  A = D     # move result from DE to AB
-  B = E     # move result from DE to AB
-  C = *I    # restore C from address 1
-  D = *C++  # restore D from call stack  
-  E = *C    # restore E from call stack
-  *D++ = B  # push high bits of result onto the data stack    
-  *D = A    # push low bits of result onto the data stack    
-  P = *E++  # execute the NEXT code
+  A = D      # move result from DE to AB
+  B = E      # move result from DE to AB
+  C = *I     # restore C from address 1
+  D = *C++   # restore D from call stack  
+  E = *C     # restore E from call stack
+  *D++ = B   # push high bits of result onto the data stack    
+  *D = A     # push low bits of result onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 42 mul10 putStackd ;
@@ -1250,10 +1250,10 @@ sqrt:  # calculate the integer square root digit by digit
     P = _sqrt_loop1
   _sqrt_skip1:   #  }
   
-  D = *C++  # restore D
-  E = *C    # restore E
-  *D = B    # push result onto the data stack    
-  P = *E++  # execute the NEXT code
+  D = *C++   # restore D
+  E = *C     # restore E
+  *D = B     # push result onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 ;:  # definition of the FORTH inbuilt exit-interpreter function
@@ -1299,7 +1299,7 @@ return: # use return to exit a function early
 #in  : main ` 0x8000 topbit putStackd ;
 #out 16
 topbit:  # find the top bit that is set
-	 # assume uniform distribution of top bits - potentially refine later  
+         # assume uniform distribution of top bits - potentially refine later  
   A = *D  # pop data stack to A
   B = 0xff00
   B = A & B
@@ -1370,12 +1370,12 @@ topbit:  # find the top bit that is set
   eq0 P = topbit_quit
   B = 2
   B = A & B
-  B = 2   # note that this does not set flags, unlike B = 1 + 1
+  B = 2      # note that this does not set flags, unlike B = 1 + 1
 
   topbit_quit:
   eq0 B = B - 1
-  *D = B    # push it onto the data stack    
-  P = *E++  # execute the NEXT code
+  *D = B     # push it onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 1 ` 0 ?2topword putStackd ;
@@ -1395,7 +1395,7 @@ topbit:  # find the top bit that is set
   A = A + 1  # this sets the result to zero  
 
   _?2topword_quit:
-  D = D + 1	  
+  D = D + 1       
   A = D - A  # compute the index from the address
   A = A + 1
   *D = A     # push the index
@@ -1410,7 +1410,7 @@ topbit:  # find the top bit that is set
 #out 0 0 0 1 1
 #in  : main ` 0 ` 0 ` 0 ` 0 ?4topword putStackd ;
 #out 0 0 0 0 0
-?4topword:  # return the index of the highest non-zero word (0 if all zero)
+?4topword:   # return the index of the highest non-zero word (0 if all zero)
   A = 3
   A = D - A
   B = *A++   # retrieve X3
@@ -1428,7 +1428,7 @@ topbit:  # find the top bit that is set
   A = A + 1  # this sets the result to zero  
 
   _?4topword_quit:
-  D = D + 1	  
+  D = D + 1       
   A = D - A  # compute the index from the address
   A = A + 1
   *D = A     # push the index
@@ -1683,15 +1683,15 @@ i4mul2:  # Multiply the 64 bit number pointed to by the top of the stack by two
 #in  : main 2` -84 2div2 putStackd ;
 #out -1 -42
 2div2:  # Divide the 2 word number on the top of the stack by two
-  A = D - 1       # point to top of stack
-  B = *A          # get high word
-  Z = B + B       # set carry if high bit set
+  A = D - 1  # point to top of stack
+  B = *A     # get high word
+  Z = B + B  # set carry if high bit set
   cin B = B >> 1  # divide by two and set carry flag
-  *A++ = B        # store value back
-  B = *A          # get next word
+  *A++ = B   # store value back
+  B = *A     # get next word
   cin B = B >> 1  # divide by two, use carry flag
-  *A++ = B        # store value back
-  P = *E++        # execute the NEXT code
+  *A++ = B   # store value back
+  P = *E++   # execute the NEXT code
 
 
 #in  : main 4` 84 4div2 putStackd ;
@@ -1701,22 +1701,22 @@ i4mul2:  # Multiply the 64 bit number pointed to by the top of the stack by two
 4div2:  # Divide the 64 bit number on the top of the stack by two
   A = D           # point to top of stack
   _4div2_fromA:
-  B = 3           # load offset
-  A = A - B	  # point to high word
-  B = *A          # get high word
-  Z = B + B       # set carry if high bit set
+  B = 3      # load offset
+  A = A - B  # point to high word
+  B = *A     # get high word
+  Z = B + B  # set carry if high bit set
   cin B = B >> 1  # divide by two and set carry flag
-  *A++ = B        # store value back
-  B = *A          # get next word
+  *A++ = B   # store value back
+  B = *A     # get next word
   cin B = B >> 1  # divide by two, use and set carry flag
-  *A++ = B        # store value back
-  B = *A          # get next word
+  *A++ = B   # store value back
+  B = *A     # get next word
   cin B = B >> 1  # divide by two, use and set carry flag
-  *A++ = B        # store value back
-  B = *A          # get next word
+  *A++ = B   # store value back
+  B = *A     # get next word
   cin B = B >> 1  # divide by two, use carry flag
-  *A++ = B        # store value back
-  P = *E++        # execute the NEXT code
+  *A++ = B   # store value back
+  P = *E++   # execute the NEXT code
 
 
 i4div2:  # Divide the 64 bit number pointed to by the top of the stack by two
@@ -1729,38 +1729,38 @@ i4div2:  # Divide the 64 bit number pointed to by the top of the stack by two
 #in  : main 2` 655360 u2div2 putStackd ;
 #out 5 0
 u2div2:  # Divide the 64 bit number on the top of the stack by two
-  A = D - 1       # point to top of stack
-  B = *A          # get high word
-  B = B >> 1      # divide by two and set carry flag
-  *A++ = B        # store value back
-  B = *A          # get next word
+  A = D - 1  # point to top of stack
+  B = *A     # get high word
+  B = B >> 1 # divide by two and set carry flag
+  *A++ = B   # store value back
+  B = *A     # get next word
   cin B = B >> 1  # divide by two, use carry flag
-  *A++ = B        # store value back
-  P = *E++        # execute the NEXT code
+  *A++ = B   # store value back
+  P = *E++   # execute the NEXT code
 
 
 #in  : main 4` 84 u4div2 putStackd ;
 #out 0 0 0 42
 #in  : main 4` 655360 u4div2 putStackd ;
 #out 0 0 5 0
-u4div2:  # Divide the 64 bit number on the top of the stack by two
-  A = D           # point to top of stack
+u4div2:      # Divide the 64 bit number on the top of the stack by two
+  A = D      # point to top of stack
   _u4div2_fromA:
-  B = 3           # load offset
-  A = A - B	  # point to high word
-  B = *A          # get high word
-  B = B >> 1      # divide by two and set carry flag
-  *A++ = B        # store value back
-  B = *A          # get next word
+  B = 3      # load offset
+  A = A - B  # point to high word
+  B = *A     # get high word
+  B = B >> 1 # divide by two and set carry flag
+  *A++ = B   # store value back
+  B = *A     # get next word
   cin B = B >> 1  # divide by two, use and set carry flag
-  *A++ = B        # store value back
-  B = *A          # get next word
+  *A++ = B   # store value back
+  B = *A     # get next word
   cin B = B >> 1  # divide by two, use and set carry flag
-  *A++ = B        # store value back
-  B = *A          # get next word
+  *A++ = B   # store value back
+  B = *A     # get next word
   cin B = B >> 1  # divide by two, use carry flag
-  *A++ = B        # store value back
-  P = *E++        # execute the NEXT code
+  *A++ = B   # store value back
+  P = *E++   # execute the NEXT code
 
 
 iu4div2:  # Divide the 64 bit number pointed to by the top of the stack by two
@@ -1784,32 +1784,32 @@ iu4div2:  # Divide the 64 bit number pointed to by the top of the stack by two
 #out 0xffffffff
 2neg:  # negate the two words on the top of stack
   A = D
-  B = *A         # read X0
-  B = 0 - B      # compute Z0
-  *A-- = B       # and store it
-  B = *A         # read X1
+  B = *A     # read X0
+  B = 0 - B  # compute Z0
+  *A-- = B   # and store it
+  B = *A     # read X1
   cin B = 0 - B  # compute Z1
-  *A-- = B       # and store it
-  P = *E++       # execute the NEXT code
+  *A-- = B   # and store it
+  P = *E++   # execute the NEXT code
 
 
 #in  : main 4` 1 4neg 4putx ;
 #out 0xffffffffffffffff
 4neg:  # negate the s64 on the top of stack
   A = D
-  B = *A         # read X0
-  B = 0 - B      # compute Z0
-  *A-- = B       # and store it
-  B = *A         # read X1
+  B = *A     # read X0
+  B = 0 - B  # compute Z0
+  *A-- = B   # and store it
+  B = *A     # read X1
   cin B = 0 - B  # compute Z1
-  *A-- = B       # and store it
-  B = *A         # read X2
+  *A-- = B   # and store it
+  B = *A     # read X2
   cin B = 0 - B  # compute Z2
-  *A-- = B       # and store it
-  B = *A         # read X3
+  *A-- = B   # and store it
+  B = *A     # read X3
   cin B = 0 - B  # compute Z3
-  *A++ = B       # and store it
-  P = *E++       # execute the NEXT code
+  *A++ = B   # and store it
+  P = *E++   # execute the NEXT code
 
 
 #in  : main 4` 1 4abs 4putx ;
@@ -1822,72 +1822,72 @@ iu4div2:  # Divide the 64 bit number pointed to by the top of the stack by two
 #in  : main 4` 0 4` 2 D sub(5) D sub(2) ` 2 _4mul_word drop drop drop putStackd ;
 #out 0 0 0 4 0 0 0 8
 _4mul_word:  # top of stack contains the top address of accumulator (D),
-	     # the top address of partial shifted input (A) and
-	     # the word to divide (B).
+             # the top address of partial shifted input (A) and
+             # the word to divide (B).
              # This runs over all non-zero bits.
-  *C-- = E  # store E
-  *C-- = D  # store D - we will leave stack state unchanged
+  *C-- = E   # store E
+  *C-- = D   # store D - we will leave stack state unchanged
 
-  B = *D--  # pop the main word we are going to work with
-  A = *D--  # Address of partially shifted
-  D = *D    # Address of accumulator
+  B = *D--   # pop the main word we are going to work with
+  A = *D--   # Address of partially shifted
+  D = *D     # Address of accumulator
   
   _4mul_word_loop:
     Z = B & 1  # test a single bit
-      	       # skip if bit is zero
+               # skip if bit is zero
     eq0 P = _4mul_word_bitzero
     :_4mul_word_bitzero
       *C-- = A  # store A as we are going to change it
       *C-- = D  # store D as we are going to change it
       *C = B    # store B as we are going to change it
 
-      	      	     ## add in the shifted value (A) to accumulator (D)
-      B = *D         # read X0
-      E = *A--       # read Y0
-      B = B + E      # compute Z0
-      *D-- = B       # and store it
-      B = *D         # read X1
-      E = *A--       # read Y1
+                ## add in the shifted value (A) to accumulator (D)
+      B = *D    # read X0
+      E = *A--  # read Y0
+      B = B + E # compute Z0
+      *D-- = B  # and store it
+      B = *D    # read X1
+      E = *A--  # read Y1
       cin B = B + E  # compute Z1
-      *D-- = B       # and store it
-      B = *D         # read X2
-      E = *A--       # read Y2
+      *D-- = B  # and store it
+      B = *D    # read X2
+      E = *A--  # read Y2
       cin B = B + E  # compute Z2
-      *D-- = B       # and store it
-      B = *D         # read X3
-      E = *A--       # read Y3
+      *D-- = B  # and store it
+      B = *D    # read X3
+      E = *A--  # read Y3
       cin B = B + E  # compute Z3
-      *D-- = B       # and store it
+      *D-- = B  # and store it
 
       B = *C++  # restore B
       D = *C++  # restore D
-      A = *C  # restore A
+      A = *C    # restore A
     _4mul_word_bitzero:
 
-		   ## shift up the contents of A
-    *C = A         # store A as we are going to change it
-    E = *A         # read X0
-    E = E + E      # compute Z0
-    *A-- = E       # and store it
-    E = *A         # read X1
+                ## shift up the contents of A
+    *C = A      # store A as we are going to change it
+    E = *A      # read X0
+    E = E + E   # compute Z0
+    *A-- = E    # and store it
+    E = *A      # read X1
     cin E = E + E  # compute Z1
-    *A-- = E       # and store it
-    E = *A         # read X2
+    *A-- = E    # and store it
+    E = *A      # read X2
     cin E = E + E  # compute Z2
-    *A-- = E       # and store it
-    E = *A         # read X3
+    *A-- = E    # and store it
+    E = *A      # read X3
     cin E = E + E  # compute Z3
-    *A-- = E       # and store it
+    *A-- = E    # and store it
     A = *C  # restore A
 
-    B = B >> 1     # shift down B
-      	     	   # loop if we haven't yet shifted down B to zero
+    B = B >> 1  # shift down B
+                # loop if we haven't yet shifted down B to zero
     ne0 P = _4mul_word_loop
 
   C = C + 1
-  D = *C++  # restore D
-  E = *C    # restore E
-  P = *E++  # execute the NEXT code
+  D = *C++   # restore D
+  E = *C     # restore E
+  P = *E++   # execute the NEXT code
 
 
 #in  : main 4` 0 4` 2 D sub(5) D sub(2) ` 2 _4mul_word _4mul_word_asl drop drop putStackd ;
@@ -1900,34 +1900,34 @@ _4mul_word_asl:  # top of stack contains word to multiply (B), address of
   B = B | 1  # force termination after 15 shifts
   lt0 P = _4mul_word_asl_skip  # skip complete loop if top bit is set
 
-  A = *D    # address of partially shifted
-  *C-- = E  # store E
+  A = *D     # address of partially shifted
+  *C-- = E   # store E
 
   _4mul_word_asl_loop:
-		   ## shift up the contents of A
-    *C = A         # store A as we are going to change it
-    E = *A         # read X0
-    E = E + E      # compute Z0
-    *A-- = E       # and store it
-    E = *A         # read X1
+                 ## shift up the contents of A
+    *C = A       # store A as we are going to change it
+    E = *A       # read X0
+    E = E + E    # compute Z0
+    *A-- = E     # and store it
+    E = *A       # read X1
     cin E = E + E  # compute Z1
-    *A-- = E       # and store it
-    E = *A         # read X2
+    *A-- = E     # and store it
+    E = *A       # read X2
     cin E = E + E  # compute Z2
-    *A-- = E       # and store it
-    E = *A         # read X3
+    *A-- = E     # and store it
+    E = *A       # read X3
     cin E = E + E  # compute Z3
-    *A-- = E       # and store it
-    A = *C         # restore A
+    *A-- = E     # and store it
+    A = *C       # restore A
 
-    B = B + B      # shift up B
-                   # loop if we haven't yet shifted B to top bit set
+    B = B + B    # shift up B
+                 # loop if we haven't yet shifted B to top bit set
     gt0 P = _4mul_word_asl_loop
 
   C = C + 1
-  E = *C    # restore E
+  E = *C     # restore E
   _4mul_word_asl_skip:
-  P = *E++  # execute the NEXT code
+  P = *E++   # execute the NEXT code
 
 
 #in  : main 2` 42 2sign putStackd ;
@@ -1985,34 +1985,34 @@ _4mul_word_asl:  # top of stack contains word to multiply (B), address of
   pick(7) pick(4)          # grab the sign words
   xor mvDC                 # compute final sign and put on call stack
   4abs 4swap 4abs 4maxmin  # abs swap so that second is smallest
-  callocC(4) 	  	   # zero space on call stack for result	 
+  callocC(4)               # zero space on call stack for result         
   ?4topword                # how big is the smallest factor?
-  mvDC 			   # store on stack for a tick
+  mvDC                     # store on stack for a tick
   C add(5) D sub(6)        # set up pointers for main _4mul_word calcs
-  mvCD switch(5)	   # switch on the size of smallest factor
+  mvCD switch(5)           # switch on the size of smallest factor
   [ dup ]                  # size 0 - nothing to do except match stack size
-  [ 			   # size 1
+  [                        # size 1
     pick(2) _4mul_word     # mul X0  
   ]
-  [ 			   # size 2	
+  [                        # size 2     
     pick(2) _4mul_word _4mul_word_asl # mul X0  
     pick(3) _4mul_word                # mul X1
   ]
-  [ 			   # size 3
+  [                        # size 3
     pick(2) _4mul_word _4mul_word_asl # mul X0  
     pick(3) _4mul_word _4mul_word_asl # mul X1
     pick(4) _4mul_word                # mul X2
   ]
-  [ 			   # size 4 - run over all words
+  [                        # size 4 - run over all words
     pick(2) _4mul_word _4mul_word_asl # mul X0  
     pick(3) _4mul_word _4mul_word_asl # mul X1
     pick(4) _4mul_word _4mul_word_asl # mul X2
     pick(5) _4mul_word                # mul X3
   ]
-  drop(11)		   # don`t need input, 2 pointers or X3 anymore
-  4mvCD			   # move result to data stack
-  mvCD lt0if(4neg) 	   # set correct sign
-  ;    	      		   # and exit happy
+  drop(11)                 # don`t need input, 2 pointers or X3 anymore
+  4mvCD                    # move result to data stack
+  mvCD lt0if(4neg)         # set correct sign
+  ;                        # and exit happy
 
 
 #in  : main ` 42 ` 0  udivmod putStackd ;
@@ -2081,12 +2081,12 @@ udivmod:  # divide - pop two words, divide them and push the quotient and
     A = A >> 1     # shift down the shifted denominator
     D = D >> 1     # shift down the bit position
     gt0 P = C      # loop unless bit position is empty
-  C = *I    # restore C from address 1
-  D = *C++  # restore D from call stack  
-  *D++ = E  # push quotient onto the data stack    
-  *D = B    # push remainder onto the data stack    
-  E = *C    # restore E from call stack
-  P = *E++  # execute the NEXT code
+  C = *I     # restore C from address 1
+  D = *C++   # restore D from call stack  
+  *D++ = E   # push quotient onto the data stack    
+  *D = B     # push remainder onto the data stack    
+  E = *C     # restore E from call stack
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 420 ` 10 umoddiv putStackd ;
@@ -2110,29 +2110,29 @@ udivmod:  # divide - pop two words, divide them and push the quotient and
 ## this is cloned from u4moddiv -- NOT YET OPTIMISED
 #in  : main 2` 655361 2` 64 u2moddiv putStackd ;
 #out 0 1 0 10240
-: u2moddiv		      ## four word division and remainder
+: u2moddiv                    ## four word division and remainder
   2swap ?2topbit mvDC         # compute the number of bits to shift up
   2swap ?2topbit mvCD sub neg
   cpDC 2asl mvCD              # shift up
-  C			      # address of first free word - soon to be result
-  callocC(2)		      # allocate and zero space for result
+  C                           # address of first free word - soon to be result
+  callocC(2)                  # allocate and zero space for result
   mvDC                        # address of result on Call stack
   inc mvDC repeat([           # loop over all possible bit shifts 
-    loadC(3) i2mul2	      # load adress of result and shift up by 1 bit
-    ?2sub    		      # subtract shifted denominator from numerator
-    pick(1)		      # grab sign word
-    ge0if([		      # see numerator was large enough to subtract
-      2storeD(2)	      # move back reduced numerator
+    loadC(3) i2mul2           # load adress of result and shift up by 1 bit
+    ?2sub                     # subtract shifted denominator from numerator
+    pick(1)                   # grab sign word
+    ge0if([                   # see numerator was large enough to subtract
+      2storeD(2)              # move back reduced numerator
       loadC(6) ` 1 or storeC(6) # set bottom bit of result --- WHAT 4???
     ] [                       
-      drop(2)		      # else discard the negative result 
+      drop(2)                 # else discard the negative result 
     ])
-    u2div2		      # shift down denominator 
-  ])   	   	  	      # all done with loop	
-  freeC(1)		      # drop the address of the result
-  drop(2)		      # drop denominator
-  2mvCD		      	      # mv the result to the stack
-  ;    	      		      # and exit happy
+    u2div2                    # shift down denominator 
+  ])                          # all done with loop      
+  freeC(1)                    # drop the address of the result
+  drop(2)                     # drop denominator
+  2mvCD                       # mv the result to the stack
+  ;                           # and exit happy
 
 
 : ?u2moddiv  # non-destructive u2moddiv
@@ -2155,29 +2155,29 @@ udivmod:  # divide - pop two words, divide them and push the quotient and
 
 #in  : main 4` 655360 4` 64 u4moddiv putStackd ;
 #out 0 0 0 0 0 0 0 10240
-: u4moddiv		      ## four word division and remainder
+: u4moddiv                    ## four word division and remainder
   4swap ?4topbit mvDC         # compute the number of bits to shift up
   4swap ?4topbit mvCD sub neg
     cpDC 4asl mvCD            # shift up
-    C			      # address of first free word - soon to be result
-    callocC(4)		      # allocate and zero space for result
+    C                         # address of first free word - soon to be result
+    callocC(4)                # allocate and zero space for result
     mvDC                      # address of result on Call stack
   inc mvDC repeat([           # loop over all possible bit shifts 
-    loadC(3) i4mul2	      # load adress of result and shift up by 1 bit
-    ?4sub    		      # subtract shifted denominator from numerator
-    pick(3)		      # grab sign word
-    ge0if([		      # see numerator was large enough to subtract
-      4storeD(4)	      # move back reduced numerator
+    loadC(3) i4mul2           # load adress of result and shift up by 1 bit
+    ?4sub                     # subtract shifted denominator from numerator
+    pick(3)                   # grab sign word
+    ge0if([                   # see numerator was large enough to subtract
+      4storeD(4)              # move back reduced numerator
       loadC(8) ` 1 or storeC(8) # set bottom bit of result
     ] [                       
-      drop(4)		      # else discard the negative result 
+      drop(4)                 # else discard the negative result 
     ])
-    u4div2		      # shift down denominator 
-  ])   	   	  	      # all done with loop	
-  freeC(1)		      # drop the address of the result
-  drop(4)		      # drop denominator
-  4mvCD		      	      # mv the result to the stack
-  ;    	      		      # and exit happy
+    u4div2                    # shift down denominator 
+  ])                          # all done with loop      
+  freeC(1)                    # drop the address of the result
+  drop(4)                     # drop denominator
+  4mvCD                       # mv the result to the stack
+  ;                           # and exit happy
 
 
 : ?u4moddiv  # non-destructive u4moddiv
@@ -2201,11 +2201,11 @@ udivmod:  # divide - pop two words, divide them and push the quotient and
 ## divide two 4 word number that may be signed
 : 4divmod 
   pick(7) pick(4)             # grab the sign words
-  ?and ge0if(u4moddiv	      # if both +ve the no problem, call u4moddiv
+  ?and ge0if(u4moddiv         # if both +ve the no problem, call u4moddiv
   [ xor mvDC                  # else compute final sign and put on call stack
     4abs drop(4) 4abs undrop(4) # absolute values
-    u4moddiv   	  	      # all is now positive so call u4moddiv
-    mvCD lt0if(4neg) 	      # set correct sign
+    u4moddiv                  # all is now positive so call u4moddiv
+    mvCD lt0if(4neg)          # set correct sign
   ]) ;
 
 ## simple access to the 4div or 4mod components of 4divmod
@@ -2216,19 +2216,19 @@ udivmod:  # divide - pop two words, divide them and push the quotient and
 #in  : main ` 0xabcd nibble putd putc(' ') nibble putd putc(' ') nibble putd putc(' ') nibble putd putc('\n') drop ;
 #out 10 11 12 13
 nibble:  # pull off the top nibble, shift rest up
-  A = *D         # pop data stack to A
-  B = 0          # zero B
-  A = A + A      # shift A up one
+  A = *D     # pop data stack to A
+  B = 0      # zero B
+  A = A + A  # shift A up one
   cin B = B + B  # shift B up one
-  A = A + A      # shift A up one
+  A = A + A  # shift A up one
   cin B = B + B  # shift B up one
-  A = A + A      # shift A up one
+  A = A + A  # shift A up one
   cin B = B + B  # shift B up one
-  A = A + A      # shift A up one
+  A = A + A  # shift A up one
   cin B = B + B  # shift B up one
-  *D++ = A       # push arg shifted up
-  *D = B         # push top nibble of arg
-  P = *E++       # execute the NEXT code
+  *D++ = A   # push arg shifted up
+  *D = B     # push top nibble of arg
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 9 putx1 ;
@@ -2309,44 +2309,44 @@ asr:  # Arithmetic Shift Right
   lt0 A = 0       # negative shifts are meaningless and crash code below
   B = 16          # read the number of bits per word
   A = B - A       # compute the skip
-  A = A + A	  # compute the skip
+  A = A + A       # compute the skip
   lt0 A = 0       # check in range, excessive shifts also crash code
   B = *D          # pop data stack to B - the number to shift
   P = P + A       # skip some of the shifts below
-  Z = B + B	  # set carry to top bit
+  Z = B + B       # set carry to top bit
   cin B = B >> 1  # arithmetic shift right
-  Z = B + B	  # set carry to top bit
+  Z = B + B       # set carry to top bit
   cin B = B >> 1  # arithmetic shift right
-  Z = B + B	  # set carry to top bit
+  Z = B + B       # set carry to top bit
   cin B = B >> 1  # arithmetic shift right
-  Z = B + B	  # set carry to top bit
+  Z = B + B       # set carry to top bit
   cin B = B >> 1  # arithmetic shift right
-  Z = B + B	  # set carry to top bit
+  Z = B + B       # set carry to top bit
   cin B = B >> 1  # arithmetic shift right
-  Z = B + B	  # set carry to top bit
+  Z = B + B       # set carry to top bit
   cin B = B >> 1  # arithmetic shift right
-  Z = B + B	  # set carry to top bit
+  Z = B + B       # set carry to top bit
   cin B = B >> 1  # arithmetic shift right
-  Z = B + B	  # set carry to top bit
+  Z = B + B       # set carry to top bit
   cin B = B >> 1  # arithmetic shift right
-  Z = B + B	  # set carry to top bit
+  Z = B + B       # set carry to top bit
   cin B = B >> 1  # arithmetic shift right
-  Z = B + B	  # set carry to top bit
+  Z = B + B       # set carry to top bit
   cin B = B >> 1  # arithmetic shift right
-  Z = B + B	  # set carry to top bit
+  Z = B + B       # set carry to top bit
   cin B = B >> 1  # arithmetic shift right
-  Z = B + B	  # set carry to top bit
+  Z = B + B       # set carry to top bit
   cin B = B >> 1  # arithmetic shift right
-  Z = B + B	  # set carry to top bit
+  Z = B + B       # set carry to top bit
   cin B = B >> 1  # arithmetic shift right
-  Z = B + B	  # set carry to top bit
+  Z = B + B       # set carry to top bit
   cin B = B >> 1  # arithmetic shift right
-  Z = B + B	  # set carry to top bit
+  Z = B + B       # set carry to top bit
   cin B = B >> 1  # arithmetic shift right
-  Z = B + B	  # set carry to top bit
+  Z = B + B       # set carry to top bit
   cin B = B >> 1  # arithmetic shift right
-  *D = B          # push result onto the data stack    
-  P = *E++        # execute the NEXT code
+  *D = B     # push result onto the data stack    
+  P = *E++   # execute the NEXT code
 
 
 #in  : main 2` 44040192 ` 20 2asr putStackd ;
@@ -2355,7 +2355,7 @@ asr:  # Arithmetic Shift Right
 #out 0xc000 0x0000
 : 2asr  # two word version of asr
         # this could be faster, it could follow the asr code format
-	# also it could check if > 32 and if so set result to zero
+        # also it could check if > 32 and if so set result to zero
   mvDC repeat(2div2); 
 
 
@@ -2365,7 +2365,7 @@ asr:  # Arithmetic Shift Right
 #out 0x4000 0x0000
 : 2lsr  # two word version of lsr
         # this could be faster, it could follow the asr format
-	# also it could check if > 32 and if so set result to zero
+        # also it could check if > 32 and if so set result to zero
   mvDC repeat(u2div2); 
 
 #in  : main ` 256 ` 4 lsr putStackd ;
@@ -2375,32 +2375,32 @@ asr:  # Arithmetic Shift Right
 #in  : main ` 256 ` 256 lsr putStackd ;
 #out 0
 lsr:  # Logical Shift Right
-  A = *D--    # pop data stack to A - the number of bits to shift
-  Z = A       # set flags
-  lt0 A = 0   # negative shifts are meaningless and crash code below
-  B = 16      # read the number of bits per word
-  A = B - A   # compute the skip
-  lt0 A = 0   # check in range, excessive shifts also crash code
-  B = *D      # pop data stack to B - the number to shift
-  P = P + A   # skip some of the shifts below
-  B = B >> 1  # shift right
-  B = B >> 1  # shift right
-  B = B >> 1  # shift right
-  B = B >> 1  # shift right
-  B = B >> 1  # shift right
-  B = B >> 1  # shift right
-  B = B >> 1  # shift right
-  B = B >> 1  # shift right
-  B = B >> 1  # shift right
-  B = B >> 1  # shift right
-  B = B >> 1  # shift right
-  B = B >> 1  # shift right
-  B = B >> 1  # shift right
-  B = B >> 1  # shift right
-  B = B >> 1  # shift right
-  B = B >> 1  # shift right
-  *D = B      # push result onto the data stack    
-  P = *E++    # execute the NEXT code
+  A = *D--   # pop data stack to A - the number of bits to shift
+  Z = A      # set flags
+  lt0 A = 0  # negative shifts are meaningless and crash code below
+  B = 16     # read the number of bits per word
+  A = B - A  # compute the skip
+  lt0 A = 0  # check in range, excessive shifts also crash code
+  B = *D     # pop data stack to B - the number to shift
+  P = P + A  # skip some of the shifts below
+  B = B >> 1 # shift right
+  B = B >> 1 # shift right
+  B = B >> 1 # shift right
+  B = B >> 1 # shift right
+  B = B >> 1 # shift right
+  B = B >> 1 # shift right
+  B = B >> 1 # shift right
+  B = B >> 1 # shift right
+  B = B >> 1 # shift right
+  B = B >> 1 # shift right
+  B = B >> 1 # shift right
+  B = B >> 1 # shift right
+  B = B >> 1 # shift right
+  B = B >> 1 # shift right
+  B = B >> 1 # shift right
+  B = B >> 1 # shift right
+  *D = B     # push result onto the data stack    
+  P = *E++   # execute the NEXT code
 
 # log(n) algorithm for parity:
 # https://stackoverflow.com/questions/17350906/computing-the-parity
@@ -2412,18 +2412,18 @@ lsr:  # Logical Shift Right
 #in  : main ` -1 ` 1 2qto4 putStackd ;
 #out -1 -1 -1 1
 2qto4:  # make the 2q into four words by adding two words sign extended
-  A = *D--       # pop data stack to A - the fractional part of a 2q
-  *C = A         # and hide on the call stack for a bit
-  A = *D         # pop data stack to A - the integer part of a 2q
-  Z = A          # set flags
-  ge0 B = 0      # set top bits
+  A = *D--   # pop data stack to A - the fractional part of a 2q
+  *C = A     # and hide on the call stack for a bit
+  A = *D     # pop data stack to A - the integer part of a 2q
+  Z = A      # set flags
+  ge0 B = 0  # set top bits
   lt0 B = 0 - 1  # clear top bits
-  *D++ = B       # sign word to stack
-  *D++ = B       # sign word to stack
-  *D++ = A       # integer part to stack
-  A = *C         # retrieve fractional part from call stack
-  *D = A         # fractional part to data stack
-  P = *E++       # execute the NEXT code
+  *D++ = B   # sign word to stack
+  *D++ = B   # sign word to stack
+  *D++ = A   # integer part to stack
+  A = *C     # retrieve fractional part from call stack
+  *D = A     # fractional part to data stack
+  P = *E++   # execute the NEXT code
 
 #in  : main q2` 20.1 q2` 21.9 q2add q2put ; 
 #out 42.00000
@@ -2441,9 +2441,9 @@ lsr:  # Logical Shift Right
 
 : q2div  # divide two 2q values leaving a 2q value on the stack
          # calls 4div which runs 2x slower than a dedicated call...
-  2mvDC 2` 0	        # make the numerator 1<<64 bigger
+  2mvDC 2` 0            # make the numerator 1<<64 bigger
   2mvCD 2qto4           # convert the denominator to a 4int 
-  4div 		        # divide - NOTE should use remainder to round
+  4div                  # divide - NOTE should use remainder to round
   2swap drop(2) ;       # compactify!
 
 
@@ -2453,13 +2453,13 @@ lsr:  # Logical Shift Right
   swap putd putc('.')   # the integer part is easy
   mvDC 3` 0 mvCD        # make into 4 words by zero padding
   4` 100000 4mul        # mul up
-  4` 0x10000 u4div 	# ignore rounding for now
+  4` 0x10000 u4div      # ignore rounding for now
   4` 10 u4divmod mvDC drop(3) # div down - 5th digit
   4` 10 u4divmod mvDC drop(3) # div down - 4th digit
   4` 10 u4divmod mvDC drop(3) # div down - 3rd digit
   4` 10 u4divmod mvDC drop(3) # div down - 2nd digit
   4` 10 u4divmod mvDC drop(3) # div down - 1st digit
-  drop(4)   	 	 # this is now zero
+  drop(4)                # this is now zero
   mvCD add('0') putc     # print 1st digit
   mvCD add('0') putc     # print 2nd digit
   mvCD add('0') putc     # print 3rd digit
@@ -2480,101 +2480,101 @@ f3neg:  # negate a f3 value.
 #in  : main f3` -42.0 f3abs f3put ;
 #out 42
 f3abs:  # f3 absolute value
-  A = *D      # top value is exponent and sign
-  B = 0xfffe  # load mask
-  A = A & B   # drop sign bit
-  *D = A      # write
-  P = *E++    # execute the NEXT code
+  A = *D     # top value is exponent and sign
+  B = 0xfffe # load mask
+  A = A & B  # drop sign bit
+  *D = A     # write
+  P = *E++   # execute the NEXT code
 
 
 f3fixuflow:  # after a subtraction, shift until top bit is clear, next is set
-  *C-- = E    # store E
-  *C = D      # store D
-  E = *D--    # read the exponent
-  B = *D--    # read the low order bits
-  A = *D      # read the high order bits 
-  D = A | B   # zero only if A and B are both zero
-  eq0 E = 1   # also zero the exponent (well, -0 as it'll get negated)
+  *C-- = E   # store E
+  *C = D     # store D
+  E = *D--   # read the exponent
+  B = *D--   # read the low order bits
+  A = *D     # read the high order bits 
+  D = A | B  # zero only if A and B are both zero
+  eq0 E = 1  # also zero the exponent (well, -0 as it'll get negated)
   eq0 P = _f3fixuflow_skip  # jump to end
-  D = 0x8000  # load bit mask  ### SHOULD NOT NEED A BIT MASK use lt0
+  D = 0x8000 # load bit mask  ### SHOULD NOT NEED A BIT MASK use lt0
 
   _f3fixuflow_loop:
     Z = A & D      # test for second highest bit
     ne0 P = _f3fixuflow_skip  # if set then jump to end
     B = B + B      # shift up low bits
     cin A = A + A  # shift up high bits
-    E = E - 1 	   # decrement exponent
+    E = E - 1      # decrement exponent
     E = E - 1
     P = _f3fixuflow_loop  # loop again
 
   _f3fixuflow_skip:
-  D = *C    # load D
-  *D-- = E  # store exponent
-  *D-- = B  # store low bits
-  *D = A    # store high bits
-  D = *C++  # restore D
-  E = *C    # restore E
-  P = *E++  # execute the NEXT code
+  D = *C     # load D
+  *D-- = E   # store exponent
+  *D-- = B   # store low bits
+  *D = A     # store high bits
+  D = *C++   # restore D
+  E = *C     # restore E
+  P = *E++   # execute the NEXT code
 
 #in  : main f3` 1 f3` 1 drop f3addsig f3put ;
 #out 2
 #in  : main f3` 3 ` 0x8000 ` 0 f3addsig f3put ;
 #out 5
-f3addsig:  # add the two significands and adjust exponent if needed
-  *C = E      # need space so push E to call stack
-  A = *D--    # read data stack - Xlow bits
-  B = *D--    # read data stack - Xhigh bits
-  D =  D - 1  # skip the exponent/sign
-  E = *D--    # read data stack - Ylow bits
-  A = E + A   # add low bits and set carry flag
-  E = *D      # read data stack - Yhigh bits
+f3addsig:    # add the two significands and adjust exponent if needed
+  *C = E     # need space so push E to call stack
+  A = *D--   # read data stack - Xlow bits
+  B = *D--   # read data stack - Xhigh bits
+  D =  D - 1 # skip the exponent/sign
+  E = *D--   # read data stack - Ylow bits
+  A = E + A  # add low bits and set carry flag
+  E = *D     # read data stack - Yhigh bits
   cin B = E + B  # add high bits using carry flag
   cin Z = 0 + 0  # test if carry bit was set
   ne0 P = _f3addsig_skip  # carry bit set, need to shift down 
-  *D++ = B    # push high bits of result
-  *D++ = A    # push low bits of result
-  E = *C      # restore E
-  P = *E++    # execute the NEXT code
+  *D++ = B   # push high bits of result
+  *D++ = A   # push low bits of result
+  E = *C     # restore E
+  P = *E++   # execute the NEXT code
 
   _f3addsig_skip:
-	          ### should we round before shifting down??? 
-  Z = 1 >> 1      # set carry bit
+             ### should we round before shifting down??? 
+  Z = 1 >> 1 # set carry bit
   cin B = B >> 1  # shift down putting carry at top
   cin A = A >> 1  # shift down
-  *D++ = B        # push high bits of result
-  *D++ = A        # push low bits of result
-  A = *D          # read exponent/sign
-  A = A + 1    	  # increment by two
+  *D++ = B   # push high bits of result
+  *D++ = A   # push low bits of result
+  A = *D     # read exponent/sign
+  A = A + 1  # increment by two
   A = A + 1
-  *D = A          # store exponent again
-  E = *C          # restore E
-  P = *E++        # execute the NEXT code
+  *D = A     # store exponent again
+  E = *C     # restore E
+  P = *E++   # execute the NEXT code
 
 #in  : main f3` 3 f3` 1 f3add+ve f3put putStackx ;
 #out 4
 : f3add+ve  # add two f3 values that are known to be positive
-  pick(3) pick(1) sub		    # find difference of exponents
+  pick(3) pick(1) sub               # find difference of exponents
   ?lt0if([ drop 3swap undrop neg ]) # if negative then swap and make +ve
-  swap drop    	     	    	    # don't need exponent of small any more
-  div2 2lsr			    # move the small significand down
+  swap drop                         # don't need exponent of small any more
+  div2 2lsr                         # move the small significand down
   f3addsig                          # the main add
   ;
 
 : f3sub+ve_order  # subract two f3 values that are +ve and ordered and
-  		  # already have bitshift on top of stack
+                  # already have bitshift on top of stack
   swap drop div2 2lsr               # move the small significand down
   roll(2) mvDC 2sub mvCD            # the main subtract
-  f3fixuflow   	    		    # may need to renormalise shifting up
+  f3fixuflow                        # may need to renormalise shifting up
   ;
 
 
 #in  : main f3` 3  f3` 1 f3sub+ve f3put putStackx ;
 #out 2
 : f3sub+ve  # subract two f3 values that are known to be positive
-  pick(3) pick(1) sub		    # find difference of exponents
-  ?gt0if(f3sub+ve_order		    # all okay so call the ordered code
-    [ drop 3swap undrop neg	    # swap the order
-      f3sub+ve_order f3neg ])	    # call the ordered code and negate result
+  pick(3) pick(1) sub               # find difference of exponents
+  ?gt0if(f3sub+ve_order             # all okay so call the ordered code
+    [ drop 3swap undrop neg         # swap the order
+      f3sub+ve_order f3neg ])       # call the ordered code and negate result
   ;
 
 
@@ -2583,7 +2583,7 @@ f3addsig:  # add the two significands and adjust exponent if needed
 : f3add  #  add two f3 values 
   dup and(1) pick(4) and(1) mul2 add   # get signs
   switch(4)
-  [ f3add+ve ]		               # 0  A+B
+  [ f3add+ve ]                         # 0  A+B
   [ f3neg f3sub+ve ]                   # 1  A-abs(B)
   [ 3swap f3neg f3sub+ve ]             # 2  B-abs(A)
   [ f3neg drop(3) f3neg undrop(3) f3add+ve f3neg ] # 3  -(abs(B)+abs(A))
@@ -2599,11 +2599,11 @@ f3addsig:  # add the two significands and adjust exponent if needed
 : f3mul  # multiply two f3 values with reasonable rounding
   pick(3) ?xor and(1) mvDC     # sort out final sign and push to call stack
   f3abs drop f3abs undrop add  # sort out approx exponent
-  mvCD or mvDC         	       # combine with sign and push to call stack
+  mvCD or mvDC                 # combine with sign and push to call stack
   2mvDC drop 2mvDC 2` 0 2mvCD 2` 0 2mvCD  # zero fill top bits
   4mul drop                    # do the main work and discard last word
-  pick(2) gt0if(	       # check if top bit is set
-    [3mul2 drop mvC1D ]	       # not set so move up one
+  pick(2) gt0if(               # check if top bit is set
+    [3mul2 drop mvC1D ]        # not set so move up one
     [drop mvC1D add(2)])       # is set so increment exponent
   ;
 
@@ -2613,18 +2613,18 @@ f3addsig:  # add the two significands and adjust exponent if needed
 #in  : main f3` -31.415926 f3` -10 f3div f3put putStackx ;
 #out 3.14159
 : f3div  # divide two f3 values with reasonable rounding
-  	 # NEEDS WORK ON TOP BIT REPRESENTATION AND ROUNDING
+         # NEEDS WORK ON TOP BIT REPRESENTATION AND ROUNDING
   pick(3) ?xor and(1) mvDC     # sort out final sign and push to call stack
-  f3abs swap f3abs sub	       # sort out approx exponent
-  mvCD or mvDC         	       # combine with sign and push to call stack
-  2mvDC drop 	       	       # push to C, discard exp
-  4` 0 2mvCD		       # zero pad move back demom
-  u4div	     	       	       # call u4div
-  4` 1 4add 		       # round (CHECK!)
-  4div2	      		       # scale back
-  2mvDC drop(2) 2mvCD	       # drop two higher order words
-  mvCD			       # put back exponent and sign
-  # f3fixoflow   		       # 1.99 * 1.99 overflows so fix up
+  f3abs swap f3abs sub         # sort out approx exponent
+  mvCD or mvDC                 # combine with sign and push to call stack
+  2mvDC drop                   # push to C, discard exp
+  4` 0 2mvCD                   # zero pad move back demom
+  u4div                        # call u4div
+  4` 1 4add                    # round (CHECK!)
+  4div2                        # scale back
+  2mvDC drop(2) 2mvCD          # drop two higher order words
+  mvCD                         # put back exponent and sign
+  # f3fixoflow                         # 1.99 * 1.99 overflows so fix up
   ;
 
 
@@ -2637,14 +2637,14 @@ f2neg:  # negate a f2 value.   This is 6 instructions
   B = 0x8000
   A = A ^ B
   *D++ = A
-  P = *E++  # execute the NEXT code
+  P = *E++   # execute the NEXT code
   
 
 ##in  : main f2` 3.1415926535 f2tof3 putStackx ;
 ##out 8
 f2tof3:  # unpack a f2 number in a f3 number
   D = D - 1
-  A = *D      # pop high order bits
+  A = *D     # pop high order bits
   A = A >> 1
   A = A >> 1
   A = A >> 1
@@ -2652,53 +2652,53 @@ f2tof3:  # unpack a f2 number in a f3 number
   A = A >> 1
   A = A >> 1
   A = A >> 1
-  B = 127     # load exponent offset
-  A = A - B   # remove offset
-  *C = A      # exponent done
-  A = *D      # reload high order bits
-  B = 0x007f  # load mask
-  A = A & B   # mash off exponent
-  B = 0x0080  # load implicit top bit
+  B = 127    # load exponent offset
+  A = A - B  # remove offset
+  *C = A     # exponent done
+  A = *D     # reload high order bits
+  B = 0x007f # load mask
+  A = A & B  # mash off exponent
+  B = 0x0080 # load implicit top bit
   A = A + B 
-  *D++ = A    # push modified top word of significand onto the data stack
-  D = D + 1   # skip the next word, we leave as is
-  A = *C      # read significand
-  *D = A      # push significand to data stack
-  P = *E++    # execute the NEXT code
+  *D++ = A   # push modified top word of significand onto the data stack
+  D = D + 1  # skip the next word, we leave as is
+  A = *C     # read significand
+  *D = A     # push significand to data stack
+  P = *E++   # execute the NEXT code
 
 
 ##in  : main f3` 3.1415926535 f3tof2 f2put putStackx ;
 ##out 3.141593
 f3tof2:  # convert an internal format f3 to a f2 (IEEE 734)
-  A = *D--    # read exponent
-  Z = A + A   # set carry as top (sign) bit
-  A = A >> 1  # shift down dropping the sign bit
-  B = 127     # load exponent offset
-  A = A + B   # add in offset
-              ## clamp to +-127 as +-Inf
-  A = A + A   # shift up 8 bits
-  A = A + A   # shift up 8 bits
-  A = A + A   # shift up 8 bits
-  A = A + A   # shift up 8 bits
-  A = A + A   # shift up 8 bits
-  A = A + A   # shift up 8 bits
-  A = A + A   # shift up 8 bits
-  A = A + A   # shift up 8 bits
-  B = *D--    # reread exponent and sign
-  B = B >> 1  # put bottom bit in carry
+  A = *D--   # read exponent
+  Z = A + A  # set carry as top (sign) bit
+  A = A >> 1 # shift down dropping the sign bit
+  B = 127    # load exponent offset
+  A = A + B  # add in offset
+             ## clamp to +-127 as +-Inf
+  A = A + A  # shift up 8 bits
+  A = A + A  # shift up 8 bits
+  A = A + A  # shift up 8 bits
+  A = A + A  # shift up 8 bits
+  A = A + A  # shift up 8 bits
+  A = A + A  # shift up 8 bits
+  A = A + A  # shift up 8 bits
+  A = A + A  # shift up 8 bits
+  B = *D--   # reread exponent and sign
+  B = B >> 1 # put bottom bit in carry
   
-  *C = A      # exponent storage
-       	       	  ##### UNFINISHED
-  A = *D      # reload high order bits
-  B = 0x007f  # load mask
-  A = A & B   # mash off exponent
-  B = 0x0080  # load implicit top bit
+  *C = A     # exponent storage
+             ##### UNFINISHED
+  A = *D     # reload high order bits
+  B = 0x007f # load mask
+  A = A & B  # mash off exponent
+  B = 0x0080 # load implicit top bit
   A = A + B 
-  *D++ = A  # push modified top word of significand onto the data stack
-  D = D + 1	  # skip the next word, we leave as is
-  A = *C  # read significand
-  *D = A  # push significand to data stack
-  P = *E++  # execute the NEXT code
+  *D++ = A   # push modified top word of significand onto the data stack
+  D = D + 1  # skip the next word, we leave as is
+  A = *C     # read significand
+  *D = A     # push significand to data stack
+  P = *E++   # execute the NEXT code
 
 
 #in : main 2` 0x8000 2` 0x8001 f2mulGOOD putStackx ;
@@ -2707,13 +2707,13 @@ f3tof2:  # convert an internal format f3 to a f2 (IEEE 734)
          # 15 exponent 1 sign 1 one 15 mantissa
   pick(3) rot ?xor ` 1 and mvDC  # compute sign
   add mvCD or                    # add exponents and put back sign bit
-  mvDC	   			 # keep near-final exponent
+  mvDC                           # keep near-final exponent
   umulxx                         # multiply mantissa
-  pick(1) gt0if(		 # check if top bit is clear
+  pick(1) gt0if(                 # check if top bit is clear
     [ 2mul2 loadC(2) sub(2) ]    # yes so shift up and dec exponent
     [ loadC(2) ])                # no
   freeC(1)
-  storeD(2)	                 # put final exponent in place
+  storeD(2)                      # put final exponent in place
   lt0if(inc)                     # round up if top bit set in low word
   ;
 
@@ -2722,39 +2722,39 @@ f3tof2:  # convert an internal format f3 to a f2 (IEEE 734)
 #out 0x8001 0xfffe
 : f2mul  # multiply two f2 values leaving a f2 value on the stack
          # 1 sign 15 exponent 1 one 15 mantissa
-  mvDC swap mvCD       	      	 # group as m1 m2 e1 e2
+  mvDC swap mvCD                 # group as m1 m2 e1 e2
   ?xor ` 0x8000 and mvDC         # compute sign
-  add ` 0x7fff and 	  	 # add exponents and blat sign bit
-  mvCD or                	 # put back the sign bit
-  mvDC	   			 # keep near-final exponent
+  add ` 0x7fff and               # add exponents and blat sign bit
+  mvCD or                        # put back the sign bit
+  mvDC                           # keep near-final exponent
   umulxx                         # multiply mantissa
-  pick(1) gt0if(		 # check if top bit is clear
-    [ 2mul2			 # yes so shift up
+  pick(1) gt0if(                 # check if top bit is clear
+    [ 2mul2                      # yes so shift up
     loadC(2) sub(2) storeC(2) ]) # and dec exponent
   lt0if(inc)                     # round up if top bit set in low word
-  mvCD				 # put back exponent and sign
+  mvCD                           # put back exponent and sign
   ;
 
 
 store:  # store first value at the second address
-  A = *D--  # pop data stack to A - address
-  B = *D--  # pop data stack to B - value
-  *A = B    # do the store
-  P = *E++  # execute the NEXT code
+  A = *D--   # pop data stack to A - address
+  B = *D--   #  pop data stack to B - value
+  *A = B     # do the store
+  P = *E++   # execute the NEXT code
 
 
-store(1):  # store the top of stack at the following address
-  A = *E++  # next code item is address
-  B = *D--  # pop data stack to A - value to store
-  *A = B    # do the store
-  P = *E++  # execute the NEXT code
+store(1):    # store the top of stack at the following address
+  A = *E++   # next code item is address
+  B = *D--   # pop data stack to A - value to store
+  *A = B     # do the store
+  P = *E++   # execute the NEXT code
 
 
-?store(1):  # store the top of stack at the following address - don't consume
-  A = *E++  # next code item is address
-  B = *D    # read data stack to A - value to store
-  *A = B    # do the store
-  P = *E++  # execute the NEXT code
+?store(1):   # store the top of stack at the following address - don't consume
+  A = *E++   # next code item is address
+  B = *D     # read data stack to A - value to store
+  *A = B     # do the store
+  P = *E++   # execute the NEXT code
 
 
 2store:  # store 2 words at the provided address
@@ -2767,7 +2767,7 @@ store(1):  # store the top of stack at the following address
   P = *E++   # execute the NEXT code
 
 
-2store(1):  # store 2 words at the provided address
+2store(1):   # store 2 words at the provided address
   A = *E++   # next code item is address
   A = A + 1  # point to top of space
   B = *D--   # load X0
@@ -2795,10 +2795,10 @@ store(1):  # store the top of stack at the following address
 #in  : main ` 42 store(rndState) ` rndState load putStackd ;
 #out 42
 load:  # load stack with the address on stack
-  A = *D    # pop data stack to A - address
-  B = *A    # retrieve value at address
-  *D = B    # push it onto the stack
-  P = *E++  # execute the NEXT code
+  A = *D     # pop data stack to A - address
+  B = *A     # retrieve value at address
+  *D = B     # push it onto the stack
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 42 store(rndState) load(rndState) putStackd ;
@@ -2814,24 +2814,24 @@ load(1):  # load stack from the following address
 #in  : main ` 42 store(rndState) ` rndState ?load swap drop putStackd ;
 #out 42
 ?load:  # load stack with the address on stack - do not consume address
-  A = *D++  # pop data stack to A - address.  Also increment stack
-  B = *A    # retrieve value at address
-  *D = B    # push it onto the stack
-  P = *E++  # execute the NEXT code
+  A = *D++   # pop data stack to A - address.  Also increment stack
+  B = *A     # retrieve value at address
+  *D = B     # push it onto the stack
+  P = *E++   # execute the NEXT code
 
 
 # untested
 4load: # load 4 words to stack from address on top of stack
-  A = *D    # pop data stack to A - address
-  B = *A++  # retrieve X0
-  *D++ = B  # push X0
-  B = *A++  # retrieve X1
-  *D++ = B  # push X1
-  B = *A++  # retrieve X2
-  *D++ = B  # push X2
-  B = *A    # retrieve X3
-  *D = B    # push X3
-  P = *E++  # execute the NEXT code
+  A = *D     # pop data stack to A - address
+  B = *A++   # retrieve X0
+  *D++ = B   # push X0
+  B = *A++   # retrieve X1
+  *D++ = B   # push X1
+  B = *A++   # retrieve X2
+  *D++ = B   # push X2
+  B = *A     # retrieve X3
+  *D = B     # push X3
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 42 store(rndState) loadinc(rndState) loadinc(rndState) putStackd ;
@@ -2850,19 +2850,19 @@ loadinc(1):  # load stack from the provided address then increment the value
 #out 0 42 0 43
 #in  : main 2` 0xffff 2store(rndState) 2loadinc(rndState) 2loadinc(rndState) putStackx ;
 #out 0x0000 0xffff 0x0001 0x0000
-2loadinc(1):  # load stack from the provided address then increment the value
-  A = *E++       # next code item is address
-  B = *A++       # retrieve X1 value at address
-  D = D + 1      # push it onto the stack
+2loadinc(1): # load stack from the provided address then increment the value
+  A = *E++   # next code item is address
+  B = *A++   # retrieve X1 value at address
+  D = D + 1  # push it onto the stack
   *D++ = B  
-  B = *A         # retrieve X0 value at address
-  *D = B         # push it onto the stack
-  B = B + 1      # increment X0
-  *A-- = B       # store the incremented X0 value
-  B = *A         # re-retrieve X1 value at address
+  B = *A     # retrieve X0 value at address
+  *D = B     # push it onto the stack
+  B = B + 1  # increment X0
+  *A-- = B   # store the incremented X0 value
+  B = *A     # re-retrieve X1 value at address
   cin B = B + 0  # increment X1  
-  *A-- = B       # store the incremented X1 value
-  P = *E++       # execute the NEXT code
+  *A-- = B   # store the incremented X1 value
+  P = *E++   # execute the NEXT code
 
 
 load1d(1):  # array access - take index from stack and array base from code
@@ -2891,15 +2891,15 @@ exec:  # pop the data stack and run it at the next word
 #in  : main ` skip jmp ` 1 skip: ` 0 putStackd ;
 #out 0
 jmp:  # unconditionally jump to the address on the stack
-  E = *D--  # pop data stack to E
-  P = *E++  # execute the NEXT code
+  E = *D--   # pop data stack to E
+  P = *E++   # execute the NEXT code
 
 
 #in  : main jmp(skip) yes skip: no ;
 #out no
 jmp(1):  # unconditionally jump to the following address (saves the quote/push)
-  E = *E    # pop data stack to E
-  P = *E++  # execute the NEXT code
+  E = *E     # pop data stack to E
+  P = *E++   # execute the NEXT code
 
 ## needs another 10 adding here...
 
@@ -2928,19 +2928,19 @@ ge0b(1):  # pop the stack and branch if ge0
 #in  : main ` 2 ` 0 if([ true ]) putStackd ;
 #out 2
 if(1):  # execute the next word if the top of data stack is non zero, else skip it
-  A = *D--  # pop data stack to A
-  B = *E++  # B contains the address of the conditional
-  Z = A     # set flags
+  A = *D--   # pop data stack to A
+  B = *E++   # B contains the address of the conditional
+  Z = A      # set flags
   eq0 B = *E++
-  P = B     # final part of the NEXT code (D already set)
+  P = B      # final part of the NEXT code (D already set)
 
 
 ?if(1):  # execute the next word if the top of data stack is non zero, else skip it
-  A = *D    # read top of data stack to A
-  B = *E++  # B contains the address of the conditional
-  Z = A     # set flags
+  A = *D     # read top of data stack to A
+  B = *E++   # B contains the address of the conditional
+  Z = A      # set flags
   eq0 B = *E++
-  P = B     # final part of the NEXT code (D already set)
+  P = B      # final part of the NEXT code (D already set)
 
 
 if(2):  # exec the next word if the top of data stack is non zero,
@@ -2955,36 +2955,36 @@ if(2):  # exec the next word if the top of data stack is non zero,
 
 ?if(2):  # execute the next word if the top of data stack is non zero,
          # else execute the one after.
-  A = *D      # pop data stack to A
-  B = *E++    # B contains the address of the conditional
-  Z = A       # set flags
+  A = *D     # pop data stack to A
+  B = *E++   # B contains the address of the conditional
+  Z = A      # set flags
   eq0 B = *E
-  E = E + 1   # whatever happens resume after both words 
-  P = B       # final part of the NEXT code (D already set)
+  E = E + 1  # whatever happens resume after both words 
+  P = B      # final part of the NEXT code (D already set)
 
 
 #in  : main ` 2 ` 1 gt0if([ true ]) putStackd ;
 #out 2 1
 #in  : main ` 2 ` 0 gt0if([ true ]) putStackd ;
 #out 2
-gt0if(1):  # execute the next word if the top of data stack is non zero, else skip it
-  A = *D--  # pop data stack to A
-  B = *E++  # B contains the address of the conditional
-  Z = A     # set flags
+gt0if(1):    # execute the next word if the top of data stack is non zero, else skip it
+  A = *D--   # pop data stack to A
+  B = *E++   # B contains the address of the conditional
+  Z = A      # set flags
   le0 B = *E++
-  P = B     # final part of the NEXT code (D already set)
+  P = B      # final part of the NEXT code (D already set)
 
 
 #in  : main ` 2 ` 1 ?gt0if([ true ]) putStackd ;
 #out 2 1 1
 #in  : main ` 2 ` 0 ?gt0if([ true ]) putStackd ;
 #out 2 0
-?gt0if(1):  # execute the next word if the top of data stack is non zero, else skip it
-  A = *D    # read top of data stack to A
-  B = *E++  # B contains the address of the conditional
-  Z = A     # set flags
+?gt0if(1):   # execute the next word if the top of data stack is non zero, else skip it
+  A = *D     # read top of data stack to A
+  B = *E++   # B contains the address of the conditional
+  Z = A      # set flags
   le0 B = *E++
-  P = B     # final part of the NEXT code (D already set)
+  P = B      # final part of the NEXT code (D already set)
 
 
 #in  : main ` 1 gt0if([ true ] [ false ]) putStackd ;
@@ -3005,8 +3005,8 @@ gt0if(2):  # exec the next word if the top of data stack is non zero,
 #out 1 1
 #in  : main ` 0 ?gt0if([ true ] [ false ]) putStackd ;
 #out 0 0
-?gt0if(2):  # execute the next word if the top of data stack is gt0
-	    # else execute the one after.
+?gt0if(2):   # execute the next word if the top of data stack is gt0
+             # else execute the one after.
   A = *D  # read data stack to A
   B = *E++   # B contains the address of the conditional
   Z = A      # set flags
@@ -3016,19 +3016,19 @@ gt0if(2):  # exec the next word if the top of data stack is non zero,
 
 
 ge0if(1):  # execute the next word if the top of data stack is non zero, else skip it
-  A = *D--  # pop data stack to A
-  B = *E++  # B contains the address of the conditional
-  Z = A     # set flags
+  A = *D--   # pop data stack to A
+  B = *E++   # B contains the address of the conditional
+  Z = A      # set flags
   lt0 B = *E++
-  P = B     # final part of the NEXT code (D already set)
+  P = B      # final part of the NEXT code (D already set)
 
 
 ?ge0if(1):  # execute the next word if the top of data stack is non zero, else skip it
-  A = *D       # read top of data stack to A
-  B = *E++     # B contains the address of the conditional
-  Z = A        # set flags
+  A = *D     # read top of data stack to A
+  B = *E++   # B contains the address of the conditional
+  Z = A      # set flags
   lt0 B = *E++ # if data stack was zero then update B to skip a word
-  P = B        # final part of the NEXT code (D already set)
+  P = B      # final part of the NEXT code (D already set)
 
 
 ge0if(2):  # exec the next word if the top of data stack is non zero,
@@ -3052,19 +3052,19 @@ ge0if(2):  # exec the next word if the top of data stack is non zero,
 
 
 eq0if(1):  # execute the next word if the top of data stack is non zero, else skip it
-  A = *D--  # pop data stack to A
-  B = *E++  # B contains the address of the conditional
-  Z = A     # set flags
+  A = *D--   # pop data stack to A
+  B = *E++   # B contains the address of the conditional
+  Z = A      # set flags
   ne0 B = *E++
-  P = B     # final part of the NEXT code (D already set)
+  P = B      # final part of the NEXT code (D already set)
 
 
-?eq0if(1):  # execute the next word if the top of data stack is non zero, else skip it
-  A = *D    # read top of data stack to A
-  B = *E++  # B contains the address of the conditional
-  Z = A     # set flags
+?eq0if(1):   # execute the next word if the top of data stack is non zero, else skip it
+  A = *D     # read top of data stack to A
+  B = *E++   # B contains the address of the conditional
+  Z = A      # set flags
   ne0 B = *E++
-  P = B     # final part of the NEXT code (D already set)
+  P = B      # final part of the NEXT code (D already set)
 
 
 eq0if(2):  # exec the next word if the top of data stack is non zero,
@@ -3077,7 +3077,7 @@ eq0if(2):  # exec the next word if the top of data stack is non zero,
   P = B      # final part of the NEXT code (D already set)
 
 
-?eq0if(2):  # execute the next word if the top of data stack is non zero,
+?eq0if(2):   # execute the next word if the top of data stack is non zero,
          # else execute the one after.
   A = *D     # read data stack to A
   B = *E++   # B contains the address of the conditional
@@ -3087,20 +3087,20 @@ eq0if(2):  # exec the next word if the top of data stack is non zero,
   P = B      # final part of the NEXT code (D already set)
 
 
-le0if(1):  # execute the next word if the top of data stack is non zero, else skip it
-  A = *D--  # pop data stack to A
-  B = *E++  # B contains the address of the conditional
-  Z = A     # set flags
+le0if(1):    # execute the next word if the top of data stack is non zero, else skip it
+  A = *D--   # pop data stack to A
+  B = *E++   # B contains the address of the conditional
+  Z = A      # set flags
   gt0 B = *E++
-  P = B     # final part of the NEXT code (D already set)
+  P = B      # final part of the NEXT code (D already set)
 
 
-?le0if(1):  # execute the next word if the top of data stack is non zero, else skip it
-  A = *D    # read top of data stack to A
-  B = *E++  # B contains the address of the conditional
-  Z = A     # set flags
+?le0if(1):   # execute the next word if the top of data stack is non zero, else skip it
+  A = *D     # read top of data stack to A
+  B = *E++   # B contains the address of the conditional
+  Z = A      # set flags
   gt0 B = *E++
-  P = B     # final part of the NEXT code (D already set)
+  P = B      # final part of the NEXT code (D already set)
 
 
 le0if(2):  # exec the next word if the top of data stack is non zero,
@@ -3124,23 +3124,23 @@ le0if(2):  # exec the next word if the top of data stack is non zero,
 
 
 lt0if(1):  # execute the next word if the top of data stack is non zero, else skip it
-  A = *D--  # pop data stack to A
-  B = *E++  # B contains the address of the conditional
-  Z = A     # set flags
+  A = *D--   # pop data stack to A
+  B = *E++   # B contains the address of the conditional
+  Z = A      # set flags
   ge0 B = *E++
-  P = B     # final part of the NEXT code (D already set)
+  P = B      # final part of the NEXT code (D already set)
 
 
-?lt0if(1):  # execute the next word if the top of data stack is non zero, else skip it
-  A = *D    # read top of data stack to A
-  B = *E++  # B contains the address of the conditional
-  Z = A     # set flags
+?lt0if(1):   # execute the next word if the top of data stack is non zero, else skip it
+  A = *D     # read top of data stack to A
+  B = *E++   # B contains the address of the conditional
+  Z = A      # set flags
   ge0 B = *E++
-  P = B     # final part of the NEXT code (D already set)
+  P = B      # final part of the NEXT code (D already set)
 
 
-lt0if(2):  # exec the next word if the top of data stack is non zero,
-        # else execute the one after.
+lt0if(2):    # exec the next word if the top of data stack is non zero,
+             # else execute the one after.
   A = *D--   # pop data stack to A
   B = *E++   # B contains the address of the conditional
   Z = A      # set flags
@@ -3149,8 +3149,8 @@ lt0if(2):  # exec the next word if the top of data stack is non zero,
   P = B      # final part of the NEXT code (D already set)
 
 
-?lt0if(2):  # execute the next word if the top of data stack is lt0
-         # else execute the one after.
+?lt0if(2):   # execute the next word if the top of data stack is lt0
+             # else execute the one after.
   A = *D     # read data stack to A
   B = *E++   # B contains the address of the conditional
   Z = A      # set flags
@@ -3162,9 +3162,9 @@ lt0if(2):  # exec the next word if the top of data stack is non zero,
 #in  : main ` 3 switch(5) [ ` 0 ] [ ` 1 ] [ ` 2 ] [ ` 3 ] [ ` 4 ] putStackd ;
 #out 3
 switch:  # takes and index and a max index (n) and calls a 0 ... n-1
-	 # virtual function with stack fidling so it resumes at the
-	 # end.   Out of bound means run the last function.
-	 # This is just the n-ary version of if(x)
+         # virtual function with stack fidling so it resumes at the
+         # end.   Out of bound means run the last function.
+         # This is just the n-ary version of if(x)
   A = *D--  # pop data stack to A - this is the number of functions
   P = _switch_withA
 
@@ -3178,7 +3178,7 @@ switch(1):  # as switch but number is next code item
   Z = B          # make sure B is not negative
   lt0 B = A - 1  # if negative then run the last function
   Z = B - A      # make sure B is not greater than number of functions
-  ge0 B = A - 1	 # if too many cap to the last function
+  ge0 B = A - 1  # if too many cap to the last function
   B = E + B      # B is now the function we are going to call
   E = E + A      # set E to the return address at the very end
   P = *B         # and jump to the function we want
@@ -3187,54 +3187,54 @@ switch(1):  # as switch but number is next code item
 #in  : main ` 0 ` 1 ` 2 cpDC mvCD putStackd ;
 #out 0 1 2 2
 cpDC:  # copy the data stack and push to the call stack
-  A = *D    # pop data stack to A
-  *C-- = A  # push onto the call stack
-  P = *E++  # execute the NEXT code
+  A = *D     # pop data stack to A
+  *C-- = A   # push onto the call stack
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 0 mvDC ` 1 mvCD putStackd ;
 #out 1 0
 mvDC:  # pop the data stack and push to the call stack
        # NOTE that you have to move back before the end of the function!
-  A = *D--  # pop data stack to A
-  *C-- = A  # push onto the call stack
-  P = *E++  # execute the NEXT code
+  A = *D--   # pop data stack to A
+  *C-- = A   # push onto the call stack
+  P = *E++   # execute the NEXT code
 
 
 cpCD:  # copy the call stack and push to the data stack
   C = C + 1
-  A = *C--  # read the call stack
+  A = *C--   # read the call stack
   D = D + 1
-  *D = A    # push onto the data stack
-  P = *E++  # execute the NEXT code
+  *D = A     # push onto the data stack
+  P = *E++   # execute the NEXT code
 
 
 mvCD:  # pop the call stack and put the value on the data stack
   C = C + 1
-  A = *C    # pop the call stack
+  A = *C     # pop the call stack
   D = D + 1
-  *D = A    # push onto the data stack
-  P = *E++  # execute the NEXT code
+  *D = A     # push onto the data stack
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 1 mvDC ` 2 mvDC mvC1D mvCD putStackd ;
 #out 1 2
 mvC1D:  # pop the penultimate call stack and put the value on the data stack
   C = C + 1
-  A = *C++  # pop the return value from the call stack
-  B = *C    # pop the data value from the call stack
-  *C-- = A  # put the return value back on the call stack
+  A = *C++   # pop the return value from the call stack
+  B = *C     # pop the data value from the call stack
+  *C-- = A   # put the return value back on the call stack
   D = D + 1
-  *D = B    # push onto the data stack
-  P = *E++  # execute the NEXT code
+  *D = B     # push onto the data stack
+  P = *E++   # execute the NEXT code
 
 
 2mvDC:  # pop the data stack and push to the call stack
-  A = *D--  # pop data stack to A
-  *C-- = A  # push onto the call stack
-  A = *D--  # pop data stack to A
-  *C-- = A  # push onto the call stack
-  P = *E++  # execute the NEXT code
+  A = *D--   # pop data stack to A
+  *C-- = A   # push onto the call stack
+  A = *D--   # pop data stack to A
+  *C-- = A   # push onto the call stack
+  P = *E++   # execute the NEXT code
 
 
 #in  : main ` 0 ` 1 2mvDC ` 2 2mvCD putStackd ;
@@ -3242,54 +3242,54 @@ mvC1D:  # pop the penultimate call stack and put the value on the data stack
 2mvCD: # pop two items from the call stack and put the values on the data stack
   C = C + 1
   D = D + 1
-  A = *C++  # pop the call stack
-  *D++ = A  # push onto the data stack
-  A = *C    # pop the call stack
-  *D = A    # push onto the data stack
-  P = *E++  # execute the NEXT code
+  A = *C++   # pop the call stack
+  *D++ = A   # push onto the data stack
+  A = *C     # pop the call stack
+  *D = A     # push onto the data stack
+  P = *E++   # execute the NEXT code
 
 
 4mvCD:  # move a 4 word block from the call stack to the data stack
-	# NOTE that this should move a block in order, even if D is descending
+        # NOTE that this should move a block in order, even if D is descending
   C = C + 1 
   D = D + 1
-  A = *C++  # pop  X3 from the call stack
-  *D++ = A  # push X3 onto the data stack
-  A = *C++  # pop  X2 from the call stack
-  *D++ = A  # push X2 onto the data stack
-  A = *C++  # pop  X1 from the call stack
-  *D++ = A  # push X1 onto the data stack
-  A = *C    # pop  X0 from the call stack
-  *D = A    # push X0 onto the data stack
-  P = *E++  # execute the NEXT code
+  A = *C++   # pop  X3 from the call stack
+  *D++ = A   # push X3 onto the data stack
+  A = *C++   # pop  X2 from the call stack
+  *D++ = A   # push X2 onto the data stack
+  A = *C++   # pop  X1 from the call stack
+  *D++ = A   # push X1 onto the data stack
+  A = *C     # pop  X0 from the call stack
+  *D = A     # push X0 onto the data stack
+  P = *E++   # execute the NEXT code
 
 
 2mvDC:  # pop the data stack and push to the call stack
-  A = *D--  # pop data stack to A
-  *C-- = A  # push onto the call stack
-  A = *D--  # pop data stack to A
-  *C-- = A  # push onto the call stack
-  P = *E++  # execute the NEXT code
+  A = *D--   # pop data stack to A
+  *C-- = A   # push onto the call stack
+  A = *D--   # pop data stack to A
+  *C-- = A   # push onto the call stack
+  P = *E++   # execute the NEXT code
 
 
 4mvDC:  # pop the data stack and push to the call stack
-  A = *D--  # pop data stack to A
-  *C-- = A  # push onto the call stack
-  A = *D--  # pop data stack to A
-  *C-- = A  # push onto the call stack
-  A = *D--  # pop data stack to A
-  *C-- = A  # push onto the call stack
-  A = *D--  # pop data stack to A
-  *C-- = A  # push onto the call stack
-  P = *E++  # execute the NEXT code
+  A = *D--   # pop data stack to A
+  *C-- = A   # push onto the call stack
+  A = *D--   # pop data stack to A
+  *C-- = A   # push onto the call stack
+  A = *D--   # pop data stack to A
+  *C-- = A   # push onto the call stack
+  A = *D--   # pop data stack to A
+  *C-- = A   # push onto the call stack
+  P = *E++   # execute the NEXT code
 
 
 #in  : main `C 42 mvCD putStackd ;
 #out 42
 `C:  # put onto the call stack
-  A = *E++  # next code item is the value to put
-  *C-- = A  # push to call stack
-  P = *E++  # execute the NEXT code
+  A = *E++   # next code item is the value to put
+  *C-- = A   # push to call stack
+  P = *E++   # execute the NEXT code
   
 
 allocC:  # allocate words on the call stack
@@ -3298,7 +3298,7 @@ allocC:  # allocate words on the call stack
   P = *E++   # execute the NEXT code
 
 
-allocC(1):  # allocate words on the call stack
+allocC(1):   # allocate words on the call stack
   A = *E++   # next code item is size of stack offset
   C = C - A  # decrement the call stack to allocate words
   P = *E++   # execute the NEXT code
@@ -3307,15 +3307,15 @@ allocC(1):  # allocate words on the call stack
 #in  : main callocC(4) 4mvCD putStackd ;
 #out 0 0 0 0
 callocC(1):  # allocate and zero words on the call stack
-  A = *E++  # next code item is size of stack offset
+  A = *E++   # next code item is size of stack offset
     _callocC_loop:  
-    *C-- = 0   # zero
-    A = A - 1  # decrement loop counter - loop A - 1 times
+    *C-- = 0 # zero
+    A = A - 1 # decrement loop counter - loop A - 1 times
     gt0 P = _callocC_loop
-  P = *E++     # execute the NEXT code
+  P = *E++   # execute the NEXT code
 
 
-freeC(1):  # free words on the call stack
+freeC(1):    # free words on the call stack
   A = *E++   # next code item is size of stack offset
   C = C + A  # increment the call stack to free words
   P = *E++   # execute the NEXT code
@@ -3323,24 +3323,24 @@ freeC(1):  # free words on the call stack
 
 # not yet checked
 memcpy: # s d n - copy n words from s to d
-  *C-- = E  # store E
-  A = *D--  # pop number of words to copy
-  B = *D--  # pop destination address
-  E = *D--  # pop source address
-  *C = D    # store D
+  *C-- = E   # store E
+  A = *D--   # pop number of words to copy
+  B = *D--   # pop destination address
+  E = *D--   # pop source address
+  *C = D     # store D
   memcpy_loop:
     D = *E++  # read from source
     *B++ = D  # write to destination
     A = A - 1 # decrement counter and set flags
     gt0 P = memcpy_loop
-  D = *C++  # restore D
-  E = *C    # restore E
-  P = *E++  # execute the NEXT code
+  D = *C++   # restore D
+  E = *C     # restore E
+  P = *E++   # execute the NEXT code
 
 
 #in  : main [ allocC(2) ` 42 storeC(1) ` 24 storeC(0) loadC(1) freeC(2) ] putStackd ;
 #out 42
-loadC(1):  # load relative to call stack and push to data stack
+loadC(1):    # load relative to call stack and push to data stack
   A = *E++   # next code item is the stack offset
   A = C + A  # compute the address of the storage cell
   A = *A     # fetch
@@ -3349,7 +3349,7 @@ loadC(1):  # load relative to call stack and push to data stack
   P = *E++   # execute the NEXT code
 
 
-storeC(1):  # store the top of data stack relative to call stack
+storeC(1):   # store the top of data stack relative to call stack
   A = *E++   # next code item is the stack offset
   A = C + A  # compute the address of the storage cell 
   B = *D--   # pop data stack to B - value to store
@@ -3363,29 +3363,29 @@ arg:  # copy the next execution item to the data stack and skip it
       # this isn't efficient for third args (asm is very efficent)
       # but it does still offer the same clean interface
   C = C + 1
-  A = *C    # get last execution pointer
-  B = *A++  # get the next item to be executed and move on A
+  A = *C     # get last execution pointer
+  B = *A++   # get the next item to be executed and move on A
   D = D + 1
-  *D = B    # push it onto the data stack
-  *C-- = A  # store back on stack so item is skipped
-  P = *E++  # execute the NEXT code
+  *D = B     # push it onto the data stack
+  *C-- = A   # store back on stack so item is skipped
+  P = *E++   # execute the NEXT code
 
 
 #in  : main `C 8 repeat([loadC(2) putd putc(' ')]) putStackd ;
 #out 7 6 5 4 3 2 1 0 
 repeat(1):  # repeat the next function as given by top of call stack
   C = C + 1
-  A = *C         # fetch the loop counter 
-  A = A - 1      # decrement and set flags
-  lt0 E = E + 1  # if done then skip body
-  lt0 P = *E++   # and execute next - all is done
-  *C-- = A       # else store back 
-  P = *E--       # this is the address of the body we will execute
+  A = *C     # fetch the loop counter 
+  A = A - 1  # decrement and set flags
+  lt0 E = E + 1 # if done then skip body
+  lt0 P = *E++  # and execute next - all is done
+  *C-- = A   # else store back 
+  P = *E--   # this is the address of the body we will execute
 
 
 #in  : main [ break(1) ` 2 ] ` 3 ` 4 ` 5 putStackd ;
 #out 3 4 5
-break(1):  # break out A-levels of functions or other stuff on the stack
+break(1):    # break out A-levels of functions or other stuff on the stack
   A = *E++   # next code item is the number of levels to go up
   C = C + A  # C now points to the new level
   E = *C     # get new E, as in return
@@ -3394,7 +3394,7 @@ break(1):  # break out A-levels of functions or other stuff on the stack
 
 #in  : main [ break(1 2) ` 2 ] ` 3 ` 4 ` 5 putStackd ;
 #out 4 5
-break(2):  # break out A-levels upwards and B-words forward
+break(2):    # break out A-levels upwards and B-words forward
   A = *E++   # next code item is the number of levels to go up
   B = *E++   # next code item is the number of levels to go forward
   C = C + A  # C now points to the new level
@@ -3403,66 +3403,66 @@ break(2):  # break out A-levels upwards and B-words forward
   P = *E++   # and run the instruction after repeat()
   
 
-while(1): # condition while(body)
-	  # evaluate the condition, if true then evaluate body and repeat
-	  # else skip to after the body
-  A = *D--       # pop data stack to A - this is the number of functions
-  Z = A          # test conditional
+while(1):    # condition while(body)
+             # evaluate the condition, if true then evaluate body and repeat
+             # else skip to after the body
+  A = *D--   # pop data stack to A - this is the number of functions
+  Z = A      # test conditional
   eq0 E = E + 1  # if false then skip body
   eq0 P = *E++   # and execute next - all is done
-  A = *E--       # this is the address of the body we will execute
-  E = E - 1      # rewind E to point to the condition
-  P = A          # and jump to the condition
+  A = *E--   # this is the address of the body we will execute
+  E = E - 1  # rewind E to point to the condition
+  P = A      # and jump to the condition
 
 
 #in  : main ` 0 [ ?eq(4) ] until([ ?putd putc(' ') inc ]) drop putStackd ;
 #out 0 1 2 3
-until(1): # condition until(body)
-	  # evaluate the condition, if false then evaluate body and repeat
-	  # else skip to after the body
-  A = *D--       # pop data stack to A - this is the number of functions
-  Z = A          # test conditional
+until(1):    # condition until(body)
+             # evaluate the condition, if false then evaluate body and repeat
+             # else skip to after the body
+  A = *D--   # pop data stack to A - this is the number of functions
+  Z = A      # test conditional
   ne0 E = E + 1  # if true then skip body
   ne0 P = *E++   # and execute next - all is done
-  A = *E--       # this is the address of the body we will execute
-  E = E - 1      # rewind E to point to the condition
-  P = A          # and jump to the condition
+  A = *E--   # this is the address of the body we will execute
+  E = E - 1  # rewind E to point to the condition
+  P = A      # and jump to the condition
 
 
 #in  : main ` 5 ?loopif([ dec ?putd putc(' ') ]) drop putStackd ;
 #out 4 3 2 1 0
-loopif(1): # same as while for the cases where the function says when it
-	   # has finished - a very fast	 loop structure
-  A = *D--      # pop data stack to A - this is the finished boolean
-  Z = A         # test conditional 
+loopif(1):   # same as while for the cases where the function says when it
+             # has finished - a very fast  loop structure
+  A = *D--   # pop data stack to A - this is the finished boolean
+  Z = A      # test conditional 
   ne0 P = *E--  # run and decrement E so on exit we run loopif(1) again
-  E = E + 1     # if done then skip body
-  P = *E++      # and execute standard next - all is done
+  E = E + 1  # if done then skip body
+  P = *E++   # and execute standard next - all is done
 
 
 #in  : main ` 5 ?loopif([ dec ?putd putc(' ') ]) drop putStackd ;
 #out 4 3 2 1 0
-?loopif(1): # same as while for the cases where the function says when it
-	   # has finished - a very fast loop structure
-  A = *D        # read data stack to A - this is the finished boolean
-  Z = A         # test conditional 
+?loopif(1):  # same as while for the cases where the function says when it
+             # has finished - a very fast loop structure
+  A = *D     # read data stack to A - this is the finished boolean
+  Z = A      # test conditional 
   ne0 P = *E--  # run and decrement E so on exit we run ?loopif(1) again
-  E = E + 1     # if done then skip body
-  P = *E++      # and execute standard next - all is done
+  E = E + 1  # if done then skip body
+  P = *E++   # and execute standard next - all is done
 
 
 #in  : main ` 5 ?downto0([ ?putd putc(' ') ]) putStackd ;
 #out 4 3 2 1 0
 ?downto0(1): # same as ?loopif() but decrements down to zero - may replace
-	     # repeat(1)
-	     # faster than repeat as don't need to use C
-  A = *D        # read data stack to A - this is the finished boolean
-  A = A - 1     # decement and test conditional 
-  ge0 *D = A    # push decremented counter
+             # repeat(1)
+             # faster than repeat as don't need to use C
+  A = *D     # read data stack to A - this is the finished boolean
+  A = A - 1  # decement and test conditional 
+  ge0 *D = A # push decremented counter
   ge0 P = *E--  # run and decrement E so on exit we run ?downto0(1) again
-  D = D - 1     # drop the counter from the data stack
-  E = E + 1     # if done then skip body
-  P = *E++      # and execute standard next - all is done
+  D = D - 1  # drop the counter from the data stack
+  E = E + 1  # if done then skip body
+  P = *E++   # and execute standard next - all is done
 
 
 #in  : main ` 42000 putdu ;
@@ -3527,11 +3527,11 @@ def rndBitState[1]
 #in  : main ` 1 rndBitSeed rndBit rndBit rndBit rndBit putStackx ;
 #out 0xad52 0x56a9 0x8606 0x4303
 rndBit:  # simple 16 bit Galois linear feedback shift register
-      	 # https://en.wikipedia.org/wiki/Linear-feedback_shift_register
+         # https://en.wikipedia.org/wiki/Linear-feedback_shift_register
          # on average this takes 11 instructions per call
-	 # [16, 14, 12, 11, 9, 7, 5, 2] (AD52) was chosed to have 8 taps, so
-	 # potenitally flipping about half the bits and these somewhat
-	 # evenly spaced, no long rows of bit flipping or non-flipping
+         # [16, 14, 12, 11, 9, 7, 5, 2] (AD52) was chosed to have 8 taps, so
+         # potenitally flipping about half the bits and these somewhat
+         # evenly spaced, no long rows of bit flipping or non-flipping
 
   A = rndBitState  # load address of state
   B = *A          # load value of state
@@ -3543,10 +3543,10 @@ rndBit:  # simple 16 bit Galois linear feedback shift register
     B = B ^ E     # apply feedback polynomial
     E = *C        # restore E
   rndBit_skip:
-  *A = B    # store result  
+  *A = B     # store result  
   D = D + 1      
-  *D = B    # push result to stack
-  P = *E++  # execute the NEXT code
+  *D = B     # push result to stack
+  P = *E++   # execute the NEXT code
 
 # the constants that define the size of the random state
 def rndN = 63
@@ -3572,17 +3572,17 @@ rnd:  # call the generate function and push the result
 
   A = rndState  # load state base
 
-  Z = B - A   # check if s[n-1] is below base
+  Z = B - A  # check if s[n-1] is below base
   eq0 P = rnd_end_case
-	      ## normal operation where we are not at the end of the buffer
-   A = *B--   # retrieve s[n] and point to s[n-1]
-  *D = B      # store address of s[n-1] (next s[n]) in rndStatePtr
-   D = *B++   # retrieve s[n-1] and point to s[n]
-   A = A + D  # combine s[n-1] and s[n] (XOR simpler and very random)
-  *B = A      # store in n
+             ## normal operation where we are not at the end of the buffer
+   A = *B--  # retrieve s[n] and point to s[n-1]
+  *D = B     # store address of s[n-1] (next s[n]) in rndStatePtr
+   D = *B++  # retrieve s[n-1] and point to s[n]
+   A = A + D # combine s[n-1] and s[n] (XOR simpler and very random)
+  *B = A     # store in n
    P = rnd_join  # jump to clean up and exit
 
-  rnd_end_case:	  ## 1/N case where we are at the end of the buffer
+  rnd_end_case:   ## 1/N case where we are at the end of the buffer
   B = rndN - 1
   B = A + B  # point to s[n-1] (next s[n])
   *D = B     # store address of s[n-1] (next s[n]) in rndStatePtr
